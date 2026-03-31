@@ -103,6 +103,46 @@
       line-height: 1.7;
       color: #2c4665;
     }
+
+    .reading-panel {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(30,58,95,0.1);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+    }
+    .reading-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1d3557;
+      margin-bottom: 0.85rem;
+    }
+    .reading-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+    @media (min-width: 860px) {
+      .reading-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .reading-card {
+      background: #f8fafc;
+      border: 1px solid #e2ebf5;
+      border-radius: 14px;
+      padding: 1rem;
+    }
+    .reading-card h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1f3958;
+      margin-bottom: 0.45rem;
+    }
+    .reading-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #49627e;
+    }
     .main-content {
       display: grid;
       grid-template-columns: 1fr;
@@ -294,6 +334,24 @@
       <p id="intro-text"></p>
     </section>
 
+    <section class="reading-panel">
+      <div class="reading-title" id="reading-title"></div>
+      <div class="reading-grid">
+        <article class="reading-card">
+          <h3 id="reading-card-1-title"></h3>
+          <p id="reading-card-1-text"></p>
+        </article>
+        <article class="reading-card">
+          <h3 id="reading-card-2-title"></h3>
+          <p id="reading-card-2-text"></p>
+        </article>
+        <article class="reading-card">
+          <h3 id="reading-card-3-title"></h3>
+          <p id="reading-card-3-text"></p>
+        </article>
+      </div>
+    </section>
+
     <main class="main-content">
       <div class="legend-wrap">
         <aside class="legend-panel">
@@ -370,6 +428,13 @@
         subtitle: 'Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.',
         introKicker: 'Lectura crítica del ecosistema',
         introText: 'Wikimedia no funciona como una comunidad única y plana. Funciona como un archipiélago: un conjunto de islas conectadas por una infraestructura común, sostenidas por valores compartidos, atravesadas por disputas de legitimidad y habitadas por comunidades que negocian continuamente quién pertenece, qué conocimiento vale y cómo se custodia el mundo común.',
+        readingTitle: 'Cómo leer este diagrama',
+        reading1Title: 'Como estructura',
+        reading1Text: 'Muestra las capas del ecosistema, desde la infraestructura digital hasta las interacciones concretas donde se negocian pertenencia y autoridad.',
+        reading2Title: 'Como mundo social',
+        reading2Text: 'No describe solo proyectos. Describe comunidades, memorias, normas, guardianes, puentes y formas desiguales de habitar Wikimedia.',
+        reading3Title: 'Como modelo crítico',
+        reading3Text: 'No solo organiza el ecosistema. También hace visible que Wikimedia vive en tensión entre conocimiento, legitimidad, cuidado, conflicto y custodia del común.',
         legendTitle: 'Explorar capas',
         noteStrong: 'Nota crítica.',
         noteText: ' Las capas del archipiélago no son cerradas ni estables. Se superponen, se disputan y se experimentan de forma desigual según idioma, rol, trayectoria y comunidad.',
@@ -384,6 +449,13 @@
         subtitle: 'A conceptual model for reading Wikimedia as a stratified ecosystem of infrastructure, values, communities, legitimacy, and interaction.',
         introKicker: 'Critical reading of the ecosystem',
         introText: 'Wikimedia does not function as a single flat community. It functions as an archipelago: a set of islands connected by a common infrastructure, sustained by shared values, crossed by disputes over legitimacy, and inhabited by communities that constantly negotiate who belongs, what knowledge counts, and how the common world is stewarded.',
+        readingTitle: 'How to read this diagram',
+        reading1Title: 'As structure',
+        reading1Text: 'It shows the layers of the ecosystem, from digital infrastructure to the concrete interactions where belonging and authority are negotiated.',
+        reading2Title: 'As a social world',
+        reading2Text: 'It does not describe projects only. It describes communities, memories, norms, guardians, bridges, and unequal ways of inhabiting Wikimedia.',
+        reading3Title: 'As a critical model',
+        reading3Text: 'It does not only organize the ecosystem. It also makes visible that Wikimedia lives in tension between knowledge, legitimacy, care, conflict, and stewardship of the commons.',
         legendTitle: 'Explore layers',
         noteStrong: 'Critical note.',
         noteText: ' The layers of the archipelago are neither closed nor stable. They overlap, they are contested, and they are experienced unevenly depending on language, role, trajectory, and community.',
@@ -621,6 +693,13 @@
       document.getElementById('page-subtitle').textContent = t.subtitle;
       document.getElementById('intro-kicker').textContent = t.introKicker;
       document.getElementById('intro-text').textContent = t.introText;
+      document.getElementById('reading-title').textContent = t.readingTitle;
+      document.getElementById('reading-card-1-title').textContent = t.reading1Title;
+      document.getElementById('reading-card-1-text').textContent = t.reading1Text;
+      document.getElementById('reading-card-2-title').textContent = t.reading2Title;
+      document.getElementById('reading-card-2-text').textContent = t.reading2Text;
+      document.getElementById('reading-card-3-title').textContent = t.reading3Title;
+      document.getElementById('reading-card-3-text').textContent = t.reading3Text;
       document.getElementById('legend-title').textContent = t.legendTitle;
       document.getElementById('note-strong').textContent = t.noteStrong;
       document.getElementById('note-text').textContent = t.noteText;
