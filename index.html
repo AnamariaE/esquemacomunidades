@@ -311,6 +311,63 @@
       color: #607890;
       line-height: 1.5;
     }
+
+    .bibliography-panel {
+      max-width: 1440px;
+      margin: 1.5rem auto 0 auto;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(30,58,95,0.12);
+      border-radius: 20px;
+      padding: 1.35rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .bibliography-kicker {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4a6fa5;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .bibliography-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #19324d;
+      margin-bottom: 0.5rem;
+    }
+    .bibliography-intro {
+      font-size: 0.96rem;
+      line-height: 1.65;
+      color: #49627e;
+      margin-bottom: 1rem;
+      max-width: 980px;
+    }
+    .bibliography-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    @media (min-width: 900px) {
+      .bibliography-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .bibliography-item {
+      background: #f8fafc;
+      border: 1px solid #e3ebf3;
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      line-height: 1.55;
+      color: #35506d;
+      font-size: 0.9rem;
+    }
+    .bibliography-item strong {
+      color: #1f3958;
+    }
+
   </style>
 </head>
 <body>
@@ -419,6 +476,14 @@
         </section>
       </div>
     </main>
+
+    <section class="bibliography-panel" aria-labelledby="bibliography-title">
+      <div class="bibliography-kicker" id="bibliography-kicker"></div>
+      <h2 class="bibliography-title" id="bibliography-title"></h2>
+      <p class="bibliography-intro" id="bibliography-intro"></p>
+      <ul class="bibliography-list" id="bibliography-list"></ul>
+    </section>
+
   </div>
 
   <script>
@@ -439,6 +504,19 @@
         noteStrong: 'Nota crítica.',
         noteText: ' Las capas del archipiélago no son cerradas ni estables. Se superponen, se disputan y se experimentan de forma desigual según idioma, rol, trayectoria y comunidad.',
         footer: 'Este modelo es descriptivo y crítico a la vez: organiza el ecosistema, pero también subraya que Wikimedia no solo almacena conocimiento, sino que negocia continuamente quién lo custodia, cómo se habla en su nombre y qué tipo de comunidad tiene autoridad para definirlo.',
+        bibliographyKicker: 'Bibliografía de trabajo',
+        bibliographyTitle: 'Bibliografía seleccionada',
+        bibliographyIntro: 'Fuentes y marcos usados para construir este diagrama conceptual del Archipiélago Wikimedia. Combina literatura teórica, documentos analíticos y escritos previos de la autora que alimentan la lectura crítica del ecosistema.',
+        bibliographyItems: [
+          '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> y <em>Liderazgo y comunidades digitales.</em>',
+          '<strong>Han, Byung-Chul.</strong> <em>La sociedad de la transparencia.</em>',
+          '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
+          '<strong>Mannarini, Terri, Veltri, Giuseppe A. y Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
+          '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David y Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
+          '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>'
+        ],
         svg: {
           ocean: 'OCÉANO DIGITAL', archipelago: 'ARCHIPIÉLAGO WIKIMEDIA', islands: 'ISLAS', territories: 'TERRITORIOS', inhabitants: 'HABITANTES', guardians: 'GUARDIANES', bridges: 'PUENTES', interactions1: 'INTERAC-', interactions2: 'CIONES'
         },
@@ -460,6 +538,19 @@
         noteStrong: 'Critical note.',
         noteText: ' The layers of the archipelago are neither closed nor stable. They overlap, they are contested, and they are experienced unevenly depending on language, role, trajectory, and community.',
         footer: 'This model is both descriptive and critical: it organizes the ecosystem, but it also highlights that Wikimedia not only stores knowledge, it continuously negotiates who stewards it, how it is spoken for, and what kind of community has authority to define it.',
+        bibliographyKicker: 'Working bibliography',
+        bibliographyTitle: 'Selected bibliography',
+        bibliographyIntro: 'Sources and frameworks used to build this conceptual diagram of the Wikimedia Archipelago. It combines theoretical literature, analytical documents, and the author’s previous writings that inform the critical reading of the ecosystem.',
+        bibliographyItems: [
+          '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> and <em>Liderazgo y comunidades digitales.</em>',
+          '<strong>Han, Byung-Chul.</strong> <em>The Transparency Society.</em>',
+          '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
+          '<strong>Mannarini, Terri, Veltri, Giuseppe A. and Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
+          '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David and Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
+          '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>'
+        ],
         svg: {
           ocean: 'DIGITAL OCEAN', archipelago: 'WIKIMEDIA ARCHIPELAGO', islands: 'ISLANDS', territories: 'TERRITORIES', inhabitants: 'INHABITANTS', guardians: 'GUARDIANS', bridges: 'BRIDGES', interactions1: 'INTERA-', interactions2: 'CTIONS'
         },
@@ -704,6 +795,10 @@
       document.getElementById('note-strong').textContent = t.noteStrong;
       document.getElementById('note-text').textContent = t.noteText;
       document.getElementById('footer-note').textContent = t.footer;
+      document.getElementById('bibliography-kicker').textContent = t.bibliographyKicker;
+      document.getElementById('bibliography-title').textContent = t.bibliographyTitle;
+      document.getElementById('bibliography-intro').textContent = t.bibliographyIntro;
+      document.getElementById('bibliography-list').innerHTML = t.bibliographyItems.map(item => `<li class="bibliography-item">${item}</li>`).join('');
 
       document.getElementById('svg-ocean-label').textContent = t.svg.ocean;
       document.getElementById('svg-archipelago-label').textContent = t.svg.archipelago;
