@@ -104,6 +104,57 @@
       color: #2c4665;
     }
 
+    /* NUEVO: Panel de dimensiones */
+    .dimensions-panel {
+      background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+      border: 2px solid #ffd93d;
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(255, 217, 61, 0.15);
+    }
+    .dimensions-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #5f4e00;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dimensions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .dimensions-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .dimension-card {
+      background: white;
+      border-left: 4px solid #ff9a3d;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .dimension-card h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1f3958;
+      margin-bottom: 0.5rem;
+    }
+    .dimension-card p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #49627e;
+      margin-bottom: 0.5rem;
+    }
+    .dimension-arrow {
+      font-size: 0.75rem;
+      color: #ff7a1f;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+
     .reading-panel {
       background: rgba(255,255,255,0.92);
       border: 1px solid rgba(30,58,95,0.1);
@@ -220,7 +271,10 @@
       color: #38506e;
     }
     .note-panel strong { color: #1d3557; }
+    
     .diagram-shell { display: grid; gap: 1rem; }
+    
+    /* Vista circular (desktop) */
     .diagram-container {
       background: rgba(255,255,255,0.55);
       border-radius: 22px;
@@ -232,6 +286,51 @@
       height: auto;
       filter: drop-shadow(0 12px 20px rgba(0,0,0,0.08));
     }
+    
+    /* NUEVO: Vista apilada para móvil */
+    .diagram-mobile {
+      display: none;
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .mobile-layer {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      border-radius: 14px;
+      border-left: 5px solid;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .mobile-layer:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .mobile-layer-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .mobile-layer-icon {
+      font-size: 2rem;
+    }
+    .mobile-layer-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .mobile-layer-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #49627e;
+    }
+    
+    @media (max-width: 768px) {
+      .diagram-container { display: none; }
+      .diagram-mobile { display: block; }
+    }
+    
     .layer-ring {
       transition: opacity 0.35s ease, filter 0.35s ease;
       cursor: pointer;
@@ -391,6 +490,31 @@
       <p id="intro-text"></p>
     </section>
 
+    <!-- NUEVO: Panel de dimensiones -->
+    <section class="dimensions-panel">
+      <div class="dimensions-title">
+        <span>📐</span>
+        <span id="dimensions-title"></span>
+      </div>
+      <div class="dimensions-grid">
+        <div class="dimension-card">
+          <h3 id="dim1-title"></h3>
+          <p id="dim1-text"></p>
+          <div class="dimension-arrow" id="dim1-arrow"></div>
+        </div>
+        <div class="dimension-card">
+          <h3 id="dim2-title"></h3>
+          <p id="dim2-text"></p>
+          <div class="dimension-arrow" id="dim2-arrow"></div>
+        </div>
+        <div class="dimension-card">
+          <h3 id="dim3-title"></h3>
+          <p id="dim3-text"></p>
+          <div class="dimension-arrow" id="dim3-arrow"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="reading-panel">
       <div class="reading-title" id="reading-title"></div>
       <div class="reading-grid">
@@ -423,6 +547,7 @@
       </div>
 
       <div class="diagram-shell">
+        <!-- Vista circular (desktop) -->
         <section class="diagram-container">
           <svg class="diagram-svg" viewBox="0 0 820 820" xmlns="http://www.w3.org/2000/svg" aria-label="Stratified diagram of the Wikimedia Archipelago" id="diagram-svg">
             <g id="layer-ocean-visual" class="layer-ring" onclick="toggleLayer('ocean')">
@@ -468,6 +593,11 @@
           </svg>
         </section>
 
+        <!-- NUEVO: Vista apilada para móvil -->
+        <section class="diagram-mobile" id="diagram-mobile">
+          <!-- Generado dinámicamente -->
+        </section>
+
         <section class="detail-panel" id="detail-panel">
           <div class="detail-title" id="detail-title"></div>
           <p class="detail-summary" id="detail-summary"></p>
@@ -493,6 +623,16 @@
         subtitle: 'Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.',
         introKicker: 'Lectura crítica del ecosistema',
         introText: 'Wikimedia no funciona como una comunidad única y plana. Funciona como un archipiélago: un conjunto de islas conectadas por una infraestructura común, sostenidas por valores compartidos, atravesadas por disputas de legitimidad y habitadas por comunidades que negocian continuamente quién pertenece, qué conocimiento vale y cómo se custodia el mundo común.',
+        dimensionsTitle: 'Tres dimensiones para leer el diagrama',
+        dim1Title: '1. Dimensión espacial',
+        dim1Text: 'El diagrama se lee de afuera hacia adentro: desde el contexto más amplio (océano digital) hasta las interacciones concretas (centro).',
+        dim1Arrow: '↓ Océano → Archipiélago → Islas → Territorios → Habitantes → Guardianes → Puentes → Interacciones',
+        dim2Title: '2. Dimensión de agencia',
+        dim2Text: 'Desde infraestructuras que condicionan (océano, plataformas) hasta actores que negocian y disputan (habitantes, guardianes, interacciones).',
+        dim2Arrow: '↓ Estructura → Valores → Comunidades → Roles → Prácticas cotidianas',
+        dim3Title: '3. Dimensión de poder',
+        dim3Text: 'Desde legitimidad instituida (territorios, normas) hasta su negociación cotidiana en ediciones, consensos, reversiones y conflictos.',
+        dim3Arrow: '↓ Contexto → Legitimidad → Custodia → Disputa',
         readingTitle: 'Cómo leer este diagrama',
         reading1Title: 'Como estructura',
         reading1Text: 'Muestra las capas del ecosistema, desde la infraestructura digital hasta las interacciones concretas donde se negocian pertenencia y autoridad.',
@@ -527,6 +667,16 @@
         subtitle: 'A conceptual model for reading Wikimedia as a stratified ecosystem of infrastructure, values, communities, legitimacy, and interaction.',
         introKicker: 'Critical reading of the ecosystem',
         introText: 'Wikimedia does not function as a single flat community. It functions as an archipelago: a set of islands connected by a common infrastructure, sustained by shared values, crossed by disputes over legitimacy, and inhabited by communities that constantly negotiate who belongs, what knowledge counts, and how the common world is stewarded.',
+        dimensionsTitle: 'Three dimensions to read the diagram',
+        dim1Title: '1. Spatial dimension',
+        dim1Text: 'The diagram reads from outside to inside: from the broadest context (digital ocean) to concrete interactions (center).',
+        dim1Arrow: '↓ Ocean → Archipelago → Islands → Territories → Inhabitants → Guardians → Bridges → Interactions',
+        dim2Title: '2. Agency dimension',
+        dim2Text: 'From infrastructures that condition (ocean, platforms) to actors who negotiate and dispute (inhabitants, guardians, interactions).',
+        dim2Arrow: '↓ Structure → Values → Communities → Roles → Everyday practices',
+        dim3Title: '3. Power dimension',
+        dim3Text: 'From instituted legitimacy (territories, norms) to its everyday negotiation in edits, consensus, reversions, and conflicts.',
+        dim3Arrow: '↓ Context → Legitimacy → Stewardship → Dispute',
         readingTitle: 'How to read this diagram',
         reading1Title: 'As structure',
         reading1Text: 'It shows the layers of the ecosystem, from digital infrastructure to the concrete interactions where belonging and authority are negotiated.',
@@ -784,6 +934,19 @@
       document.getElementById('page-subtitle').textContent = t.subtitle;
       document.getElementById('intro-kicker').textContent = t.introKicker;
       document.getElementById('intro-text').textContent = t.introText;
+      
+      // Dimensiones
+      document.getElementById('dimensions-title').textContent = t.dimensionsTitle;
+      document.getElementById('dim1-title').textContent = t.dim1Title;
+      document.getElementById('dim1-text').textContent = t.dim1Text;
+      document.getElementById('dim1-arrow').textContent = t.dim1Arrow;
+      document.getElementById('dim2-title').textContent = t.dim2Title;
+      document.getElementById('dim2-text').textContent = t.dim2Text;
+      document.getElementById('dim2-arrow').textContent = t.dim2Arrow;
+      document.getElementById('dim3-title').textContent = t.dim3Title;
+      document.getElementById('dim3-text').textContent = t.dim3Text;
+      document.getElementById('dim3-arrow').textContent = t.dim3Arrow;
+      
       document.getElementById('reading-title').textContent = t.readingTitle;
       document.getElementById('reading-card-1-title').textContent = t.reading1Title;
       document.getElementById('reading-card-1-text').textContent = t.reading1Text;
@@ -812,6 +975,7 @@
       document.getElementById('diagram-svg').setAttribute('aria-label', currentLang === 'es' ? 'Diagrama estratificado del Archipiélago Wikimedia' : 'Stratified diagram of the Wikimedia Archipelago');
 
       renderLegend();
+      renderMobileDiagram();
       updateLanguageButtons();
       showDetail(currentLayer);
     }
@@ -829,6 +993,27 @@
                 <div class="layer-desc">${data.desc}</div>
               </div>
             </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMobileDiagram() {
+      const mobileContainer = document.getElementById('diagram-mobile');
+      const layerOrder = ['ocean', 'archipelago', 'islands', 'territories', 'inhabitants', 'guardians', 'bridges', 'interactions'];
+      
+      mobileContainer.innerHTML = layerOrder.map(key => {
+        const layer = layers[key];
+        const data = layer[currentLang];
+        return `
+          <div class="mobile-layer" style="border-left-color: ${layer.color}; background: ${layer.color}08;" onclick="toggleLayer('${key}')">
+            <div class="mobile-layer-header">
+              <div class="mobile-layer-icon">${layer.icon}</div>
+              <div>
+                <div class="mobile-layer-title" style="color: ${layer.color};">${data.name}</div>
+              </div>
+            </div>
+            <div class="mobile-layer-desc">${data.desc}</div>
           </div>
         `;
       }).join('');
