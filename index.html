@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Archipiélago Wikimedia - Ecosistema Digital 2025</title>
+    <meta name="description" content="Esquema interactivo sobre la custodianía del conocimiento y comunidades digitales en el ecosistema Wikimedia.">
+    
+    <meta property="og:title" content="Archipiélago Wikimedia: Comunidades Digitales">
+    <meta property="og:description" content="Análisis interactivo de las capas del ecosistema Wikimedia en 2025.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tu-usuario.github.io/tu-repo/preview.png"> 
+
+    <link rel="icon" href="https://fav.farm/🏝️" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1rem;
+            min-height: 100vh;
+            color: #1e3a5f;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #1e3a5f;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #4a6fa5;
+        }
+        
+        /* 4. DISEÑO RESPONSIVO (Grid adaptable) */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr; /* Una columna en móvil */
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 350px 1fr; /* Dos columnas en desktop */
+            }
+            .header { text-align: left; }
+        }
+        
+        /* Legend Panel */
+        .legend-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+        }
+        
+        .legend-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #4fc3f7;
+        }
+        
+        .layer-control {
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .layer-control:hover {
+            transform: translateX(5px);
+        }
+        
+        .layer-control.active .layer-header {
+            background: linear-gradient(135deg, #4fc3f7 0%, #3a9dbf 100%);
+            color: white;
+        }
+        
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f0f4f8;
+            border-radius: 10px;
+        }
+        
+        .layer-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .layer-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .layer-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* Circular Diagram */
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .diagram-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+        
+        /* Layer Styles */
+        .layer-ring {
+            transition: all 0.4s ease;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* 5. EFECTO HOVER PARA INTERACTIVIDAD */
+        .layer-ring:hover {
+            filter: brightness(1.1);
+            stroke-width: 45; /* En círculos con stroke */
+        }
+        
+        .layer-ring.dimmed {
+            opacity: 0.15;
+            filter: grayscale(1);
+        }
+        
+        .layer-label {
+            font-family: inherit;
+            font-weight: 700;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+        
+        .layer-detail {
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .layer-ring.active .layer-detail {
+            opacity: 1;
+        }
+        
+        /* Detail Panel */
+        .detail-panel {
+            position: fixed; /* Mejor que absolute para asegurar visibilidad en móvil */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            z-index: 100;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .detail-panel.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .detail-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        @media (min-width: 600px) {
+            .detail-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        .detail-item {
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 4px solid #4fc3f7;
+        }
+        
+        .detail-item-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            background: #e0e7ef;
+            border-radius: 10px;
+            margin: 2px;
+        }
+        
+        .close-detail {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #eee;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .evolution-note {
+            background: #fff8e1;
+            border-left: 4px solid #ffd93d;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Archipiélago Wikimedia</h1>
+            <p class="subtitle">Ecosistema de custodianía del conocimiento • 2025</p>
+        </header>
+        
+        <main class="main-content">
+            <aside class="legend-panel">
+                <div class="legend-title">Explorar Capas</div>
+                
+                <div class="layer-control" data-layer="ocean" onclick="toggleLayer('ocean')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #0d1b2a;">🌊</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Océano Digital</div>
+                            <div class="layer-desc">Infraestructura global</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control" data-layer="archipelago" onclick="toggleLayer('archipelago')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #1e2d3d;">🗺️</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Archipiélago</div>
+                            <div class="layer-desc">Conexión de proyectos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control active" data-layer="islands" onclick="toggleLayer('islands')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #4fc3f7;">🏝️</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Islas (Proyectos)</div>
+                            <div class="layer-desc">Wikipedia, Commons...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control" data-layer="territories" onclick="toggleLayer('territories')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #ff9a3d;">📜</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Territorios</div>
+                            <div class="layer-desc">Valores y Normas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control" data-layer="inhabitants" onclick="toggleLayer('inhabitants')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #4ecdc4;">👥</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Habitantes</div>
+                            <div class="layer-desc">Roles y Autoridad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control" data-layer="guardians" onclick="toggleLayer('guardians')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #ff6b6b;">🛡️</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Guardianes</div>
+                            <div class="layer-desc">Custodios de legitimidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer-control" data-layer="bridges" onclick="toggleLayer('bridges')">
+                    <div class="layer-header">
+                        <div class="layer-icon" style="background: #ffd93d;">🌉</div>
+                        <div class="layer-info">
+                            <div class="layer-name">Puentes</div>
+                            <div class="layer-desc">Infraestructura Crítica</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="evolution-note">
+                    <strong>Nota:</strong> Haz clic en los anillos del diagrama para profundizar en cada concepto.
+                </div>
+            </aside>
+            
+            <section class="diagram-container">
+                <svg class="diagram-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                    <g id="layer-ocean-visual" class="layer-ring" onclick="toggleLayer('ocean')">
+                        <circle cx="400" cy="400" r="380" fill="none" stroke="#0d1b2a" stroke-width="40" opacity="0.3"/>
+                        <text x="400" y="50" text-anchor="middle" class="layer-label" fill="#0d1b2a" font-size="14">OCÉANO DIGITAL</text>
+                    </g>
+                    
+                    <g id="layer-archipelago-visual" class="layer-ring" onclick="toggleLayer('archipelago')">
+                        <circle cx="400" cy="400" r="330" fill="none" stroke="#1e2d3d" stroke-width="30" opacity="0.4"/>
+                        <text x="400" y="110" text-anchor="middle" class="layer-label" fill="#1e2d3d" font-size="13">ARCHIPIÉLAGO</text>
+                    </g>
+                    
+                    <g id="layer-islands-visual" class="layer-ring active" onclick="toggleLayer('islands')">
+                        <circle cx="400" cy="400" r="280" fill="#4fc3f7" opacity="0.6"/>
+                        <text x="400" y="400" text-anchor="middle" class="layer-label" fill="white" font-size="24">ISLAS</text>
+                        </g>
+                    
+                    <g id="layer-territories-visual" class="layer-ring" onclick="toggleLayer('territories')">
+                        <circle cx="400" cy="400" r="220" fill="none" stroke="#ff9a3d" stroke-width="35" opacity="0.5"/>
+                        <text x="400" y="220" text-anchor="middle" class="layer-label" fill="#ff7a1f" font-size="13">TERRITORIOS</text>
+                    </g>
+                    
+                    <g id="layer-inhabitants-visual" class="layer-ring" onclick="toggleLayer('inhabitants')">
+                        <circle cx="400" cy="400" r="160" fill="none" stroke="#4ecdc4" stroke-width="30" opacity="0.5"/>
+                        <text x="400" y="280" text-anchor="middle" class="layer-label" fill="#3ab5ad" font-size="12">HABITANTES</text>
+                    </g>
+                    
+                    <g id="layer-guardians-visual" class="layer-ring" onclick="toggleLayer('guardians')">
+                        <circle cx="400" cy="400" r="110" fill="none" stroke="#ff6b6b" stroke-width="25" opacity="0.5"/>
+                        <text x="400" y="330" text-anchor="middle" class="layer-label" fill="#e85454" font-size="11">GUARDIANES</text>
+                    </g>
+                    
+                    <g id="layer-bridges-visual" class="layer-ring" onclick="toggleLayer('bridges')">
+                        <circle cx="400" cy="400" r="70" fill="#ffd93d" opacity="0.7"/>
+                        <text x="400" y="405" text-anchor="middle" class="layer-label" fill="#5f4e00" font-size="16">PUENTES</text>
+                    </g>
+                </svg>
+            </section>
+        </main>
+        
+        <div class="detail-panel" id="detail-panel">
+            <button class="close-detail" onclick="closeDetail()" aria-label="Cerrar">✕</button>
+            <div class="detail-title" id="detail-title"></div>
+            <div class="detail-grid" id="detail-content"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Los datos se mantienen iguales al original para preservar tu investigación
+        const layerData = {
+            ocean: { title: "🌊 Océano Digital", items: [{title: "Infraestructura no neutral", tags: ["Plataformas", "Algoritmos"]}, {title: "Economías de atención", tags: ["Engagement", "Métricas"]}] },
+            archipelago: { title: "🗺️ Archipiélago Wikimedia", items: [{title: "Comunidades lingüísticas", tags: ["300+ idiomas", "Contextos locales"]}, {title: "Gobernanza", tags: ["Policies", "Arbcom"]}] },
+            islands: { title: "🏝️ Islas (Proyectos)", items: [{title: "Wikipedia", tags: ["Enciclopedia", "Fuentes"]}, {title: "Wikidata", tags: ["Datos", "Linked Data"]}, {title: "Commons", tags: ["Multimedia", "Libre"]}] },
+            territories: { title: "📜 Territorios", items: [{title: "Pilares", tags: ["Neutralidad", "Consenso"]}, {title: "Verificabilidad", tags: ["Citas", "Fiabilidad"]}] },
+            inhabitants: { title: "👥 Habitantes", items: [{title: "Editores", tags: ["Nuevos", "Expertos"]}, {title: "Bots", tags: ["Automatización", "IA"]}] },
+            guardians: { title: "🛡️ Guardianes", items: [{title: "Patrulleros", tags: ["Vandalismo", "Calidad"]}, {title: "Custodios", tags: ["Legitimidad", "Trayectoria"]}] },
+            bridges: { title: "🌉 Puentes", items: [{title: "WikiLearn", tags: ["Formación", "Onboarding"]}, {title: "Traducción", tags: ["Diversidad", "Puentes"]}] }
+        };
+        
+        function toggleLayer(layerName) {
+            document.querySelectorAll('.layer-control').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-layer="${layerName}"]`).classList.add('active');
+            
+            document.querySelectorAll('.layer-ring').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('dimmed');
+            });
+            
+            const visualLayer = document.getElementById(`layer-${layerName}-visual`);
+            visualLayer.classList.remove('dimmed');
+            visualLayer.classList.add('active');
+            
+            showDetail(layerName);
+        }
+        
+        function showDetail(layerName) {
+            const data = layerData[layerName];
+            const panel = document.getElementById('detail-panel');
+            const title = document.getElementById('detail-title');
+            const content = document.getElementById('detail-content');
+            
+            title.innerHTML = data.title;
+            content.innerHTML = data.items.map(item => `
+                <div class="detail-item">
+                    <div class="detail-item-title">${item.title}</div>
+                    <div>${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                </div>
+            `).join('');
+            
+            panel.classList.add('visible');
+        }
+        
+        function closeDetail() {
+            document.getElementById('detail-panel').classList.remove('visible');
+            document.querySelectorAll('.layer-ring').forEach(el => el.classList.remove('dimmed'));
+        }
+
+        // Iniciar con Islas
+        window.onload = () => toggleLayer('islands');
+    </script>
+</body>
+</html>
