@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archipiélago Wikimedia - Ecosistema estratificado</title>
+  <title>Archipiélago Wikimedia</title>
   <meta name="description" content="Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.">
   <meta property="og:title" content="Archipiélago Wikimedia">
   <meta property="og:description" content="Modelo conceptual del ecosistema Wikimedia como archipiélago de infraestructura, valores, comunidades, legitimidad e interacción.">
@@ -11,7 +11,6 @@
   <link rel="icon" href="https://fav.farm/🏝️" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -19,24 +18,64 @@
       min-height: 100vh;
       color: #1e3a5f;
     }
-
-    .container {
-      max-width: 1440px;
-      margin: 0 auto;
+    .container { max-width: 1440px; margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0.75rem;
+      z-index: 999;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(30,58,95,0.12);
+      border-radius: 999px;
+      padding: 0.45rem 0.5rem;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .lang-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #35587c;
+      padding-left: 0.45rem;
+      letter-spacing: 0.02em;
+      opacity: 0.9;
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: #35587c;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #2c8dd8 0%, #226fa9 100%);
+      color: white;
+      box-shadow: 0 8px 22px rgba(44,141,216,0.24);
     }
 
-    .header {
-      margin-bottom: 1.25rem;
-      text-align: center;
+    @media (max-width: 640px) {
+      .topbar { justify-content: center; top: 0.5rem; }
+      .lang-switcher { width: auto; }
+      .lang-label { display: none; }
     }
 
+    .header { margin-bottom: 1.25rem; text-align: center; }
     h1 {
       font-size: clamp(2rem, 5vw, 2.8rem);
       color: #1e3a5f;
       font-weight: 800;
       margin-bottom: 0.5rem;
     }
-
     .subtitle {
       font-size: 1.08rem;
       color: #4a6fa5;
@@ -44,7 +83,6 @@
       margin: 0 auto;
       line-height: 1.5;
     }
-
     .intro-panel {
       background: rgba(255,255,255,0.9);
       border: 1px solid rgba(30,58,95,0.1);
@@ -53,7 +91,6 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.06);
       margin-bottom: 1.5rem;
     }
-
     .intro-kicker {
       font-size: 0.82rem;
       text-transform: uppercase;
@@ -62,41 +99,33 @@
       font-weight: 700;
       margin-bottom: 0.65rem;
     }
-
     .intro-panel p {
       line-height: 1.7;
       color: #2c4665;
     }
-
     .main-content {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
       align-items: start;
     }
-
     @media (min-width: 1100px) {
-      .main-content {
-        grid-template-columns: 370px 1fr;
-      }
+      .main-content { grid-template-columns: 370px 1fr; }
       .header { text-align: left; }
       .subtitle { margin: 0; }
     }
-
     .legend-panel, .note-panel {
       background: white;
       border-radius: 18px;
       padding: 1.2rem;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.09);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.09);
     }
-
     .legend-wrap {
       display: grid;
       gap: 1rem;
       position: sticky;
       top: 1rem;
     }
-
     .legend-title {
       font-size: 1.2rem;
       font-weight: 800;
@@ -104,21 +133,17 @@
       padding-bottom: 0.6rem;
       border-bottom: 3px solid #4fc3f7;
     }
-
     .layer-control {
       cursor: pointer;
       transition: transform 0.2s ease;
       margin-bottom: 0.7rem;
     }
-
     .layer-control:hover { transform: translateX(4px); }
-
     .layer-control.active .layer-header {
       color: white;
       background: linear-gradient(135deg, #2c8dd8 0%, #226fa9 100%);
       box-shadow: 0 8px 22px rgba(44,141,216,0.24);
     }
-
     .layer-header {
       display: flex;
       align-items: center;
@@ -128,7 +153,6 @@
       border-radius: 12px;
       transition: background 0.25s ease;
     }
-
     .layer-icon {
       width: 42px;
       height: 42px;
@@ -140,57 +164,43 @@
       flex-shrink: 0;
       box-shadow: inset 0 0 0 2px rgba(255,255,255,0.14);
     }
-
     .layer-name {
       font-weight: 700;
       font-size: 0.95rem;
       margin-bottom: 0.1rem;
     }
-
     .layer-desc {
       font-size: 0.79rem;
       opacity: 0.85;
       line-height: 1.35;
     }
-
     .note-panel {
       font-size: 0.9rem;
       line-height: 1.55;
       color: #38506e;
     }
-
     .note-panel strong { color: #1d3557; }
-
-    .diagram-shell {
-      display: grid;
-      gap: 1rem;
-    }
-
+    .diagram-shell { display: grid; gap: 1rem; }
     .diagram-container {
       background: rgba(255,255,255,0.55);
       border-radius: 22px;
       padding: 1rem;
       box-shadow: 0 10px 35px rgba(0,0,0,0.06);
     }
-
     .diagram-svg {
       width: 100%;
       height: auto;
       filter: drop-shadow(0 12px 20px rgba(0,0,0,0.08));
     }
-
     .layer-ring {
       transition: opacity 0.35s ease, filter 0.35s ease;
       cursor: pointer;
     }
-
     .layer-ring:hover { filter: brightness(1.06); }
-
     .layer-ring.dimmed {
       opacity: 0.14;
       filter: grayscale(0.3);
     }
-
     .layer-label {
       font-family: inherit;
       font-weight: 800;
@@ -198,61 +208,52 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-
     .detail-panel {
       background: white;
       border-radius: 20px;
       padding: 1.2rem;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.12);
       position: sticky;
       bottom: 1rem;
     }
-
     .detail-title {
       font-size: 1.25rem;
       font-weight: 800;
       margin-bottom: 0.3rem;
       color: #19324d;
     }
-
     .detail-summary {
       font-size: 0.94rem;
       line-height: 1.6;
       color: #4d6784;
       margin-bottom: 1rem;
     }
-
     .detail-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.85rem;
     }
-
     @media (min-width: 800px) {
       .detail-grid { grid-template-columns: 1fr 1fr; }
     }
-
     .detail-item {
       background: #f8fafc;
       padding: 0.9rem;
       border-radius: 12px;
       border-left: 4px solid #4fc3f7;
     }
-
     .detail-item-title {
       font-weight: 700;
       font-size: 0.9rem;
       margin-bottom: 0.35rem;
       color: #1f3958;
     }
-
     .detail-item-text {
       font-size: 0.84rem;
       line-height: 1.5;
       color: #49627e;
       margin-bottom: 0.45rem;
     }
-
     .tag {
       display: inline-block;
       font-size: 0.72rem;
@@ -262,7 +263,6 @@
       margin: 2px 4px 0 0;
       color: #284561;
     }
-
     .footer-note {
       margin-top: 0.9rem;
       padding-top: 0.85rem;
@@ -275,151 +275,80 @@
 </head>
 <body>
   <div class="container">
+    <div class="topbar">
+      <div class="lang-switcher" aria-label="Language switcher">
+        <span class="lang-label">Idioma / Language</span>
+        <button class="lang-btn active" id="btn-es" onclick="setLanguage('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+
     <header class="header">
-      <h1>Archipiélago Wikimedia</h1>
-      <p class="subtitle">Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.</p>
+      <p style="font-size:0.88rem;color:#4a6fa5;margin-bottom:0.75rem;font-weight:600;">Usa el selector ES / EN arriba a la derecha para cambiar el idioma.</p>
+      <h1 id="page-title"></h1>
+      <p class="subtitle" id="page-subtitle"></p>
     </header>
 
     <section class="intro-panel">
-      <div class="intro-kicker">Lectura crítica del ecosistema</div>
-      <p>
-        Wikimedia no funciona como una comunidad única y plana. Funciona como un archipiélago: un conjunto de islas conectadas por una infraestructura común, sostenidas por valores compartidos, atravesadas por disputas de legitimidad y habitadas por comunidades que negocian continuamente quién pertenece, qué conocimiento vale y cómo se custodia el mundo común.
-      </p>
+      <div class="intro-kicker" id="intro-kicker"></div>
+      <p id="intro-text"></p>
     </section>
 
     <main class="main-content">
       <div class="legend-wrap">
         <aside class="legend-panel">
-          <div class="legend-title">Explorar capas</div>
-
-          <div class="layer-control" data-layer="ocean" onclick="toggleLayer('ocean')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#0d1b2a;">🌊</div>
-              <div class="layer-info">
-                <div class="layer-name">Océano digital</div>
-                <div class="layer-desc">Internet amplio, atención, visibilidad, velocidad y culturas de plataforma.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="archipelago" onclick="toggleLayer('archipelago')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#1e2d3d;">🗺️</div>
-              <div class="layer-info">
-                <div class="layer-name">Archipiélago Wikimedia</div>
-                <div class="layer-desc">Conjunto de proyectos, comunidades, idiomas, afiliados y memorias compartidas.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control active" data-layer="islands" onclick="toggleLayer('islands')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#4fc3f7;">🏝️</div>
-              <div class="layer-info">
-                <div class="layer-name">Islas</div>
-                <div class="layer-desc">Unidades relativamente autónomas con culturas y trayectorias propias.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="territories" onclick="toggleLayer('territories')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#ff9a3d;">📜</div>
-              <div class="layer-info">
-                <div class="layer-name">Territorios digitales</div>
-                <div class="layer-desc">Valores, normas y criterios de legitimidad que se vuelven operativos.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="inhabitants" onclick="toggleLayer('inhabitants')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#4ecdc4;">👥</div>
-              <div class="layer-info">
-                <div class="layer-name">Habitantes</div>
-                <div class="layer-desc">Roles, trayectorias y experiencias desiguales de habitar el ecosistema.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="guardians" onclick="toggleLayer('guardians')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#ff6b6b;">🛡️</div>
-              <div class="layer-info">
-                <div class="layer-name">Guardianes / custodios</div>
-                <div class="layer-desc">Actores de regulación, interpretación y custodia de legitimidad.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="bridges" onclick="toggleLayer('bridges')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#ffd93d;">🌉</div>
-              <div class="layer-info">
-                <div class="layer-name">Puentes</div>
-                <div class="layer-desc">Mentoría, traducción y aprendizaje para conectar islas y capas.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="layer-control" data-layer="interactions" onclick="toggleLayer('interactions')">
-            <div class="layer-header">
-              <div class="layer-icon" style="background:#8e6ff2;">⚡</div>
-              <div class="layer-info">
-                <div class="layer-name">Interacciones y disputas</div>
-                <div class="layer-desc">Edición, consenso, mediación, conflicto, reversión, abandono y retorno.</div>
-              </div>
-            </div>
-          </div>
+          <div class="legend-title" id="legend-title"></div>
+          <div id="legend-controls"></div>
         </aside>
 
         <aside class="note-panel">
-          <strong>Nota crítica.</strong> Las capas del archipiélago no son cerradas ni estables. Se superponen, se disputan y se experimentan de forma desigual según idioma, rol, trayectoria y comunidad.
+          <strong id="note-strong"></strong>
+          <span id="note-text"></span>
         </aside>
       </div>
 
       <div class="diagram-shell">
         <section class="diagram-container">
-          <svg class="diagram-svg" viewBox="0 0 820 820" xmlns="http://www.w3.org/2000/svg" aria-label="Diagrama estratificado del Archipiélago Wikimedia">
+          <svg class="diagram-svg" viewBox="0 0 820 820" xmlns="http://www.w3.org/2000/svg" aria-label="Stratified diagram of the Wikimedia Archipelago" id="diagram-svg">
             <g id="layer-ocean-visual" class="layer-ring" onclick="toggleLayer('ocean')">
               <circle cx="410" cy="410" r="390" fill="none" stroke="#0d1b2a" stroke-width="36" opacity="0.26"/>
-              <text x="410" y="42" text-anchor="middle" class="layer-label" fill="#0d1b2a" font-size="14">OCÉANO DIGITAL</text>
+              <text x="410" y="42" text-anchor="middle" class="layer-label" fill="#0d1b2a" font-size="14" id="svg-ocean-label">OCÉANO DIGITAL</text>
             </g>
 
             <g id="layer-archipelago-visual" class="layer-ring" onclick="toggleLayer('archipelago')">
               <circle cx="410" cy="410" r="342" fill="none" stroke="#1e2d3d" stroke-width="28" opacity="0.35"/>
-              <text x="410" y="100" text-anchor="middle" class="layer-label" fill="#1e2d3d" font-size="13">ARCHIPIÉLAGO WIKIMEDIA</text>
+              <text x="410" y="100" text-anchor="middle" class="layer-label" fill="#1e2d3d" font-size="13" id="svg-archipelago-label">ARCHIPIÉLAGO WIKIMEDIA</text>
             </g>
 
             <g id="layer-islands-visual" class="layer-ring active" onclick="toggleLayer('islands')">
               <circle cx="410" cy="410" r="285" fill="#4fc3f7" opacity="0.56"/>
-              <text x="410" y="412" text-anchor="middle" class="layer-label" fill="white" font-size="24">ISLAS</text>
+              <text x="410" y="412" text-anchor="middle" class="layer-label" fill="white" font-size="24" id="svg-islands-label">ISLAS</text>
             </g>
 
             <g id="layer-territories-visual" class="layer-ring" onclick="toggleLayer('territories')">
               <circle cx="410" cy="410" r="228" fill="none" stroke="#ff9a3d" stroke-width="34" opacity="0.56"/>
-              <text x="410" y="230" text-anchor="middle" class="layer-label" fill="#ff7a1f" font-size="13">TERRITORIOS</text>
+              <text x="410" y="230" text-anchor="middle" class="layer-label" fill="#ff7a1f" font-size="13" id="svg-territories-label">TERRITORIOS</text>
             </g>
 
             <g id="layer-inhabitants-visual" class="layer-ring" onclick="toggleLayer('inhabitants')">
               <circle cx="410" cy="410" r="172" fill="none" stroke="#4ecdc4" stroke-width="30" opacity="0.56"/>
-              <text x="410" y="286" text-anchor="middle" class="layer-label" fill="#2ca7a0" font-size="12">HABITANTES</text>
+              <text x="410" y="286" text-anchor="middle" class="layer-label" fill="#2ca7a0" font-size="12" id="svg-inhabitants-label">HABITANTES</text>
             </g>
 
             <g id="layer-guardians-visual" class="layer-ring" onclick="toggleLayer('guardians')">
               <circle cx="410" cy="410" r="126" fill="none" stroke="#ff6b6b" stroke-width="26" opacity="0.58"/>
-              <text x="410" y="337" text-anchor="middle" class="layer-label" fill="#de4f4f" font-size="11">GUARDIANES</text>
+              <text x="410" y="337" text-anchor="middle" class="layer-label" fill="#de4f4f" font-size="11" id="svg-guardians-label">GUARDIANES</text>
             </g>
 
             <g id="layer-bridges-visual" class="layer-ring" onclick="toggleLayer('bridges')">
               <circle cx="410" cy="410" r="87" fill="none" stroke="#ffd93d" stroke-width="24" opacity="0.7"/>
-              <text x="410" y="382" text-anchor="middle" class="layer-label" fill="#655200" font-size="11">PUENTES</text>
+              <text x="410" y="382" text-anchor="middle" class="layer-label" fill="#655200" font-size="11" id="svg-bridges-label">PUENTES</text>
             </g>
 
             <g id="layer-interactions-visual" class="layer-ring" onclick="toggleLayer('interactions')">
               <circle cx="410" cy="410" r="48" fill="#8e6ff2" opacity="0.9"/>
-              <text x="410" y="406" text-anchor="middle" class="layer-label" fill="white" font-size="10">INTERAC-</text>
-              <text x="410" y="420" text-anchor="middle" class="layer-label" fill="white" font-size="10">CIONES</text>
+              <text x="410" y="406" text-anchor="middle" class="layer-label" fill="white" font-size="10" id="svg-interactions-label-1">INTERAC-</text>
+              <text x="410" y="420" text-anchor="middle" class="layer-label" fill="white" font-size="10" id="svg-interactions-label-2">CIONES</text>
             </g>
           </svg>
         </section>
@@ -428,91 +357,322 @@
           <div class="detail-title" id="detail-title"></div>
           <p class="detail-summary" id="detail-summary"></p>
           <div class="detail-grid" id="detail-content"></div>
-          <div class="footer-note">
-            Este modelo es descriptivo y crítico a la vez: organiza el ecosistema, pero también subraya que Wikimedia no solo almacena conocimiento, sino que negocia continuamente quién lo custodia, cómo se habla en su nombre y qué tipo de comunidad tiene autoridad para definirlo.
-          </div>
+          <div class="footer-note" id="footer-note"></div>
         </section>
       </div>
     </main>
   </div>
 
   <script>
-    const layerData = {
-      ocean: {
-        title: '🌊 Océano digital',
-        summary: 'El entorno amplio en el que Wikimedia existe: internet, culturas de plataforma, economías de atención, ritmos de visibilidad y hábitos digitales que afectan cómo la gente llega, compara, participa o se retira.',
-        items: [
-          { title: 'Infraestructura no neutral', text: 'Wikimedia habita un internet moldeado por plataformas, lógicas de circulación, métricas y arquitecturas de visibilidad que no controla completamente.', tags: ['plataformas', 'atención', 'visibilidad'] },
-          { title: 'Velocidad y sobreinformación', text: 'El océano digital premia reacción rápida, legibilidad inmediata y flujo continuo, condiciones que muchas veces chocan con el ritmo lento del consenso y la verificación.', tags: ['velocidad', 'fricción', 'ritmo'] },
-          { title: 'Culturas de exposición', text: 'Los hábitos de internet enseñan a valorar lo visible, lo breve y lo circulable. Wikimedia debe coexistir con esa pedagogía sin rendirse a ella.', tags: ['exposición', 'hábitos', 'cultura digital'] }
-        ]
+    const ui = {
+      es: {
+        title: 'Archipiélago Wikimedia',
+        subtitle: 'Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.',
+        introKicker: 'Lectura crítica del ecosistema',
+        introText: 'Wikimedia no funciona como una comunidad única y plana. Funciona como un archipiélago: un conjunto de islas conectadas por una infraestructura común, sostenidas por valores compartidos, atravesadas por disputas de legitimidad y habitadas por comunidades que negocian continuamente quién pertenece, qué conocimiento vale y cómo se custodia el mundo común.',
+        legendTitle: 'Explorar capas',
+        noteStrong: 'Nota crítica.',
+        noteText: ' Las capas del archipiélago no son cerradas ni estables. Se superponen, se disputan y se experimentan de forma desigual según idioma, rol, trayectoria y comunidad.',
+        footer: 'Este modelo es descriptivo y crítico a la vez: organiza el ecosistema, pero también subraya que Wikimedia no solo almacena conocimiento, sino que negocia continuamente quién lo custodia, cómo se habla en su nombre y qué tipo de comunidad tiene autoridad para definirlo.',
+        svg: {
+          ocean: 'OCÉANO DIGITAL', archipelago: 'ARCHIPIÉLAGO WIKIMEDIA', islands: 'ISLAS', territories: 'TERRITORIOS', inhabitants: 'HABITANTES', guardians: 'GUARDIANES', bridges: 'PUENTES', interactions1: 'INTERAC-', interactions2: 'CIONES'
+        },
+        lang: 'es'
       },
-      archipelago: {
-        title: '🗺️ Archipiélago Wikimedia',
-        summary: 'El ecosistema general del movimiento: un conjunto de proyectos, comunidades, idiomas, afiliados y espacios de coordinación que comparten misión, pero no exactamente las mismas normas, trayectorias ni memorias.',
-        items: [
-          { title: 'Ecosistema plural', text: 'Wikimedia no es una sola comunidad. Es un sistema de comunidades conectadas por misión, infraestructura y fricciones compartidas.', tags: ['pluralidad', 'movimiento', 'conexión'] },
-          { title: 'Misión común, experiencias desiguales', text: 'La idea de conocimiento libre atraviesa el archipiélago, pero cada isla la vive de forma distinta según idioma, contexto, historia y poder local.', tags: ['misión', 'idioma', 'contexto'] },
-          { title: 'Memoria y coordinación', text: 'El archipiélago conserva memoria colectiva a través de proyectos, políticas, campañas, documentación y espacios de deliberación.', tags: ['memoria', 'coordinación', 'gobernanza'] }
-        ]
-      },
-      islands: {
-        title: '🏝️ Islas',
-        summary: 'Las unidades relativamente autónomas dentro del archipiélago. Cada isla tiene cultura de trabajo, umbrales de legitimidad, memoria y tono propios.',
-        items: [
-          { title: 'Wikipedia por idiomas', text: 'Comunidades lingüísticas que encarnan la misión común, pero con dinámicas internas, trayectorias y sensibilidades muy distintas.', tags: ['idiomas', 'comunidades', 'contextos locales'] },
-          { title: 'Commons y Wikidata', text: 'Islas especializadas donde cambia la forma del conocimiento y también los criterios de trabajo, cuidado y autoridad.', tags: ['multimedia', 'datos', 'especialización'] },
-          { title: 'Meta, WikiProjects, afiliados', text: 'Espacios donde se articulan coordinación, estrategia, memoria organizativa y circulación de conocimiento entre comunidades.', tags: ['coordinación', 'afiliados', 'proyectos'] }
-        ]
-      },
-      territories: {
-        title: '📜 Territorios digitales',
-        summary: 'Las zonas de sentido donde valores, normas y criterios de legitimidad se vuelven operativos. Aquí se define qué cuenta como conocimiento válido y qué formas de participación se reconocen como propias del proyecto.',
-        items: [
-          { title: 'Verificabilidad y fuentes', text: 'Territorios donde se decide qué evidencia entra, cómo se justifica y qué forma adquiere la credibilidad.', tags: ['fuentes', 'evidencia', 'credibilidad'] },
-          { title: 'Neutralidad, consenso, notabilidad', text: 'Criterios que no son solo técnicos. También organizan autoridad, pertenencia y tono dentro del ecosistema.', tags: ['neutralidad', 'consenso', 'notabilidad'] },
-          { title: 'Idea de buen editor', text: 'Cada territorio modela una imagen de contribución legítima, del newcomer aceptable y del conflicto tolerable.', tags: ['legitimidad', 'rol', 'norma informal'] }
-        ]
-      },
-      inhabitants: {
-        title: '👥 Habitantes',
-        summary: 'Las personas y agentes que viven el ecosistema de forma desigual. No todos acceden al mismo centro simbólico ni a las mismas claves de lectura.',
-        items: [
-          { title: 'Lectores y editores nuevos', text: 'Entradas iniciales al archipiélago, marcadas por aprendizaje, fricción, descubrimiento y a veces expulsión temprana.', tags: ['newcomers', 'aprendizaje', 'entrada'] },
-          { title: 'Editores establecidos y admins', text: 'Trayectorias más largas que concentran experiencia, interpretación de reglas y autoridad práctica.', tags: ['trayectoria', 'autoridad', 'experiencia'] },
-          { title: 'Afiliados, facilitadores, staff, bots', text: 'Habitantes con funciones distintas que median, sostienen, automatizan o conectan el ecosistema.', tags: ['afiliados', 'facilitación', 'bots'] }
-        ]
-      },
-      guardians: {
-        title: '🛡️ Guardianes / custodios',
-        summary: 'Nodos donde se concentra regulación, interpretación y custodia de legitimidad. No solo protegen. También median, ordenan, filtran y, a veces, excluyen.',
-        items: [
-          { title: 'Patrulleros y admins', text: 'Figuras de mantenimiento del orden cotidiano, reversión, control de calidad y respuesta a disrupciones.', tags: ['patrullaje', 'calidad', 'orden'] },
-          { title: 'Custodios normativos', text: 'Actores que encarnan o interpretan políticas, umbrales de aceptabilidad y fronteras del proyecto.', tags: ['norma', 'interpretación', 'frontera'] },
-          { title: 'Autoridad distribuida', text: 'La legitimidad en Wikimedia no está totalmente centralizada, pero tampoco es plana. Se negocia en roles, trayectorias y reconocimiento.', tags: ['legitimidad', 'poder', 'reconocimiento'] }
-        ]
-      },
-      bridges: {
-        title: '🌉 Puentes',
-        summary: 'Infraestructuras humanas y pedagógicas que conectan capas, islas y comunidades. Sin ellas, el archipiélago se fragmenta y se vuelve menos habitable entre sí.',
-        items: [
-          { title: 'WikiLearn', text: 'Capa pedagógica del movimiento que traduce valores compartidos en práctica aprendible, reusable y aplicable.', tags: ['WikiLearn', 'aprendizaje', 'traducción'] },
-          { title: 'Mentoría, onboarding, documentación', text: 'Puentes que hacen encontrable, comprensible y practicable el ingreso o la circulación entre islas.', tags: ['mentoría', 'onboarding', 'documentación'] },
-          { title: 'Boundary spanners', text: 'Actores puente que conectan comunidades, traducen marcos y hacen habitable el paso entre teoría, práctica y pertenencia.', tags: ['traducción', 'mediación', 'comunidad'] }
-        ]
-      },
-      interactions: {
-        title: '⚡ Interacciones y disputas',
-        summary: 'El lugar donde la arquitectura se vuelve vida social real. Aquí se juega quién pertenece, qué tono es legítimo y cómo se custodia el conocimiento en la práctica.',
-        items: [
-          { title: 'Edición y reversión', text: 'La producción del conocimiento no es lineal. Se construye en actos de escritura, corrección, desacuerdo y reescritura.', tags: ['edición', 'reversión', 'producción'] },
-          { title: 'Consenso, mediación, borrado, bloqueo', text: 'Prácticas donde se vuelve visible la política cotidiana del ecosistema y sus formas de resolver tensión.', tags: ['consenso', 'mediación', 'borrado'] },
-          { title: 'Abandono y retorno', text: 'La vida del archipiélago también se mide en cansancio, desgaste, reingreso, aprendizaje y permanencia desigual.', tags: ['retiro', 'retorno', 'cuidado'] }
-        ]
+      en: {
+        title: 'Wikimedia Archipelago',
+        subtitle: 'A conceptual model for reading Wikimedia as a stratified ecosystem of infrastructure, values, communities, legitimacy, and interaction.',
+        introKicker: 'Critical reading of the ecosystem',
+        introText: 'Wikimedia does not function as a single flat community. It functions as an archipelago: a set of islands connected by a common infrastructure, sustained by shared values, crossed by disputes over legitimacy, and inhabited by communities that constantly negotiate who belongs, what knowledge counts, and how the common world is stewarded.',
+        legendTitle: 'Explore layers',
+        noteStrong: 'Critical note.',
+        noteText: ' The layers of the archipelago are neither closed nor stable. They overlap, they are contested, and they are experienced unevenly depending on language, role, trajectory, and community.',
+        footer: 'This model is both descriptive and critical: it organizes the ecosystem, but it also highlights that Wikimedia not only stores knowledge, it continuously negotiates who stewards it, how it is spoken for, and what kind of community has authority to define it.',
+        svg: {
+          ocean: 'DIGITAL OCEAN', archipelago: 'WIKIMEDIA ARCHIPELAGO', islands: 'ISLANDS', territories: 'TERRITORIES', inhabitants: 'INHABITANTS', guardians: 'GUARDIANS', bridges: 'BRIDGES', interactions1: 'INTERA-', interactions2: 'CTIONS'
+        },
+        lang: 'en'
       }
     };
 
+    const layers = {
+      ocean: {
+        color: '#0d1b2a',
+        icon: '🌊',
+        es: {
+          name: 'Océano digital',
+          desc: 'Internet amplio, atención, visibilidad, velocidad y culturas de plataforma.',
+          title: '🌊 Océano digital',
+          summary: 'El entorno amplio en el que Wikimedia existe: internet, culturas de plataforma, economías de atención, ritmos de visibilidad y hábitos digitales que afectan cómo la gente llega, compara, participa o se retira.',
+          items: [
+            { title: 'Infraestructura no neutral', text: 'Wikimedia habita un internet moldeado por plataformas, lógicas de circulación, métricas y arquitecturas de visibilidad que no controla completamente.', tags: ['plataformas', 'atención', 'visibilidad'] },
+            { title: 'Velocidad y sobreinformación', text: 'El océano digital premia reacción rápida, legibilidad inmediata y flujo continuo, condiciones que muchas veces chocan con el ritmo lento del consenso y la verificación.', tags: ['velocidad', 'fricción', 'ritmo'] },
+            { title: 'Culturas de exposición', text: 'Los hábitos de internet enseñan a valorar lo visible, lo breve y lo circulable. Wikimedia debe coexistir con esa pedagogía sin rendirse a ella.', tags: ['exposición', 'hábitos', 'cultura digital'] }
+          ]
+        },
+        en: {
+          name: 'Digital ocean',
+          desc: 'The broader internet, attention, visibility, speed, and platform cultures.',
+          title: '🌊 Digital ocean',
+          summary: 'The broad environment in which Wikimedia exists: the internet, platform cultures, attention economies, rhythms of visibility, and digital habits that shape how people arrive, compare, participate, or withdraw.',
+          items: [
+            { title: 'Non-neutral infrastructure', text: 'Wikimedia inhabits an internet shaped by platforms, circulation logics, metrics, and architectures of visibility that it does not fully control.', tags: ['platforms', 'attention', 'visibility'] },
+            { title: 'Speed and information overload', text: 'The digital ocean rewards quick reaction, immediate legibility, and continuous flow, conditions that often clash with the slower rhythm of consensus and verification.', tags: ['speed', 'friction', 'rhythm'] },
+            { title: 'Cultures of exposure', text: 'Internet habits teach people to value what is visible, brief, and easily circulated. Wikimedia must coexist with that pedagogy without surrendering to it.', tags: ['exposure', 'habits', 'digital culture'] }
+          ]
+        }
+      },
+      archipelago: {
+        color: '#1e2d3d',
+        icon: '🗺️',
+        es: {
+          name: 'Archipiélago Wikimedia',
+          desc: 'Conjunto de proyectos, comunidades, idiomas, afiliados y memorias compartidas.',
+          title: '🗺️ Archipiélago Wikimedia',
+          summary: 'El ecosistema general del movimiento: un conjunto de proyectos, comunidades, idiomas, afiliados y espacios de coordinación que comparten misión, pero no exactamente las mismas normas, trayectorias ni memorias.',
+          items: [
+            { title: 'Ecosistema plural', text: 'Wikimedia no es una sola comunidad. Es un sistema de comunidades conectadas por misión, infraestructura y fricciones compartidas.', tags: ['pluralidad', 'movimiento', 'conexión'] },
+            { title: 'Misión común, experiencias desiguales', text: 'La idea de conocimiento libre atraviesa el archipiélago, pero cada isla la vive de forma distinta según idioma, contexto, historia y poder local.', tags: ['misión', 'idioma', 'contexto'] },
+            { title: 'Memoria y coordinación', text: 'El archipiélago conserva memoria colectiva a través de proyectos, políticas, campañas, documentación y espacios de deliberación.', tags: ['memoria', 'coordinación', 'gobernanza'] }
+          ]
+        },
+        en: {
+          name: 'Wikimedia archipelago',
+          desc: 'A set of projects, communities, languages, affiliates, and shared memories.',
+          title: '🗺️ Wikimedia archipelago',
+          summary: 'The overall ecosystem of the movement: a set of projects, communities, languages, affiliates, and coordination spaces that share a mission, but not exactly the same norms, trajectories, or memories.',
+          items: [
+            { title: 'Plural ecosystem', text: 'Wikimedia is not a single community. It is a system of communities connected by mission, infrastructure, and shared frictions.', tags: ['plurality', 'movement', 'connection'] },
+            { title: 'Shared mission, unequal experiences', text: 'The idea of free knowledge crosses the archipelago, but each island lives it differently depending on language, context, history, and local power.', tags: ['mission', 'language', 'context'] },
+            { title: 'Memory and coordination', text: 'The archipelago preserves collective memory through projects, policies, campaigns, documentation, and deliberative spaces.', tags: ['memory', 'coordination', 'governance'] }
+          ]
+        }
+      },
+      islands: {
+        color: '#4fc3f7',
+        icon: '🏝️',
+        es: {
+          name: 'Islas',
+          desc: 'Unidades relativamente autónomas con culturas y trayectorias propias.',
+          title: '🏝️ Islas',
+          summary: 'Las unidades relativamente autónomas dentro del archipiélago. Cada isla tiene cultura de trabajo, umbrales de legitimidad, memoria y tono propios.',
+          items: [
+            { title: 'Wikipedia por idiomas', text: 'Comunidades lingüísticas que encarnan la misión común, pero con dinámicas internas, trayectorias y sensibilidades muy distintas.', tags: ['idiomas', 'comunidades', 'contextos locales'] },
+            { title: 'Commons y Wikidata', text: 'Islas especializadas donde cambia la forma del conocimiento y también los criterios de trabajo, cuidado y autoridad.', tags: ['multimedia', 'datos', 'especialización'] },
+            { title: 'Meta, WikiProjects, afiliados', text: 'Espacios donde se articulan coordinación, estrategia, memoria organizativa y circulación de conocimiento entre comunidades.', tags: ['coordinación', 'afiliados', 'proyectos'] }
+          ]
+        },
+        en: {
+          name: 'Islands',
+          desc: 'Relatively autonomous units with their own cultures and trajectories.',
+          title: '🏝️ Islands',
+          summary: 'The relatively autonomous units within the archipelago. Each island has its own work culture, thresholds of legitimacy, memory, and tone.',
+          items: [
+            { title: 'Language Wikipedias', text: 'Language communities that embody the common mission, but with very different internal dynamics, trajectories, and sensibilities.', tags: ['languages', 'communities', 'local contexts'] },
+            { title: 'Commons and Wikidata', text: 'Specialized islands where the form of knowledge changes, along with the criteria for work, care, and authority.', tags: ['multimedia', 'data', 'specialization'] },
+            { title: 'Meta, WikiProjects, affiliates', text: 'Spaces where coordination, strategy, organizational memory, and knowledge circulation between communities are articulated.', tags: ['coordination', 'affiliates', 'projects'] }
+          ]
+        }
+      },
+      territories: {
+        color: '#ff9a3d',
+        icon: '📜',
+        es: {
+          name: 'Territorios digitales',
+          desc: 'Valores, normas y criterios de legitimidad que se vuelven operativos.',
+          title: '📜 Territorios digitales',
+          summary: 'Las zonas de sentido donde valores, normas y criterios de legitimidad se vuelven operativos. Aquí se define qué cuenta como conocimiento válido y qué formas de participación se reconocen como propias del proyecto.',
+          items: [
+            { title: 'Verificabilidad y fuentes', text: 'Territorios donde se decide qué evidencia entra, cómo se justifica y qué forma adquiere la credibilidad.', tags: ['fuentes', 'evidencia', 'credibilidad'] },
+            { title: 'Neutralidad, consenso, notabilidad', text: 'Criterios que no son solo técnicos. También organizan autoridad, pertenencia y tono dentro del ecosistema.', tags: ['neutralidad', 'consenso', 'notabilidad'] },
+            { title: 'Idea de buen editor', text: 'Cada territorio modela una imagen de contribución legítima, del newcomer aceptable y del conflicto tolerable.', tags: ['legitimidad', 'rol', 'norma informal'] }
+          ]
+        },
+        en: {
+          name: 'Digital territories',
+          desc: 'Values, norms, and legitimacy criteria made operational.',
+          title: '📜 Digital territories',
+          summary: 'Zones of meaning where values, norms, and criteria of legitimacy become operative. This is where what counts as valid knowledge and what forms of participation are recognized as proper to the project are defined.',
+          items: [
+            { title: 'Verifiability and sources', text: 'Territories where it is decided what evidence enters, how it is justified, and what form credibility takes.', tags: ['sources', 'evidence', 'credibility'] },
+            { title: 'Neutrality, consensus, notability', text: 'Criteria that are not only technical. They also organize authority, belonging, and tone within the ecosystem.', tags: ['neutrality', 'consensus', 'notability'] },
+            { title: 'Idea of a good editor', text: 'Each territory models an image of legitimate contribution, the acceptable newcomer, and tolerable conflict.', tags: ['legitimacy', 'role', 'informal norm'] }
+          ]
+        }
+      },
+      inhabitants: {
+        color: '#4ecdc4',
+        icon: '👥',
+        es: {
+          name: 'Habitantes',
+          desc: 'Roles, trayectorias y experiencias desiguales de habitar el ecosistema.',
+          title: '👥 Habitantes',
+          summary: 'Las personas y agentes que viven el ecosistema de forma desigual. No todos acceden al mismo centro simbólico ni a las mismas claves de lectura.',
+          items: [
+            { title: 'Lectores y editores nuevos', text: 'Entradas iniciales al archipiélago, marcadas por aprendizaje, fricción, descubrimiento y a veces expulsión temprana.', tags: ['newcomers', 'aprendizaje', 'entrada'] },
+            { title: 'Editores establecidos y admins', text: 'Trayectorias más largas que concentran experiencia, interpretación de reglas y autoridad práctica.', tags: ['trayectoria', 'autoridad', 'experiencia'] },
+            { title: 'Afiliados, facilitadores, staff, bots', text: 'Habitantes con funciones distintas que median, sostienen, automatizan o conectan el ecosistema.', tags: ['afiliados', 'facilitación', 'bots'] }
+          ]
+        },
+        en: {
+          name: 'Inhabitants',
+          desc: 'Roles, trajectories, and unequal ways of inhabiting the ecosystem.',
+          title: '👥 Inhabitants',
+          summary: 'The people and agents who live the ecosystem unevenly. Not everyone has access to the same symbolic center or to the same interpretive keys.',
+          items: [
+            { title: 'Readers and new editors', text: 'Initial entries into the archipelago, marked by learning, friction, discovery, and sometimes early expulsion.', tags: ['newcomers', 'learning', 'entry'] },
+            { title: 'Established editors and admins', text: 'Longer trajectories that concentrate experience, rule interpretation, and practical authority.', tags: ['trajectory', 'authority', 'experience'] },
+            { title: 'Affiliates, facilitators, staff, bots', text: 'Inhabitants with different functions who mediate, sustain, automate, or connect the ecosystem.', tags: ['affiliates', 'facilitation', 'bots'] }
+          ]
+        }
+      },
+      guardians: {
+        color: '#ff6b6b',
+        icon: '🛡️',
+        es: {
+          name: 'Guardianes / custodios',
+          desc: 'Actores de regulación, interpretación y custodia de legitimidad.',
+          title: '🛡️ Guardianes / custodios',
+          summary: 'Nodos donde se concentra regulación, interpretación y custodia de legitimidad. No solo protegen. También median, ordenan, filtran y, a veces, excluyen.',
+          items: [
+            { title: 'Patrulleros y admins', text: 'Figuras de mantenimiento del orden cotidiano, reversión, control de calidad y respuesta a disrupciones.', tags: ['patrullaje', 'calidad', 'orden'] },
+            { title: 'Custodios normativos', text: 'Actores que encarnan o interpretan políticas, umbrales de aceptabilidad y fronteras del proyecto.', tags: ['norma', 'interpretación', 'frontera'] },
+            { title: 'Autoridad distribuida', text: 'La legitimidad en Wikimedia no está totalmente centralizada, pero tampoco es plana. Se negocia en roles, trayectorias y reconocimiento.', tags: ['legitimidad', 'poder', 'reconocimiento'] }
+          ]
+        },
+        en: {
+          name: 'Guardians / stewards',
+          desc: 'Actors of regulation, interpretation, and legitimacy stewardship.',
+          title: '🛡️ Guardians / stewards',
+          summary: 'Nodes where regulation, interpretation, and the stewardship of legitimacy concentrate. They do not only protect. They also mediate, order, filter, and at times exclude.',
+          items: [
+            { title: 'Patrollers and admins', text: 'Figures of everyday order maintenance, reversion, quality control, and response to disruptions.', tags: ['patrolling', 'quality', 'order'] },
+            { title: 'Normative custodians', text: 'Actors who embody or interpret policies, thresholds of acceptability, and project boundaries.', tags: ['norm', 'interpretation', 'boundary'] },
+            { title: 'Distributed authority', text: 'Legitimacy in Wikimedia is not fully centralized, but neither is it flat. It is negotiated across roles, trajectories, and recognition.', tags: ['legitimacy', 'power', 'recognition'] }
+          ]
+        }
+      },
+      bridges: {
+        color: '#ffd93d',
+        icon: '🌉',
+        es: {
+          name: 'Puentes',
+          desc: 'Mentoría, traducción y aprendizaje para conectar islas y capas.',
+          title: '🌉 Puentes',
+          summary: 'Infraestructuras humanas y pedagógicas que conectan capas, islas y comunidades. Sin ellas, el archipiélago se fragmenta y se vuelve menos habitable entre sí.',
+          items: [
+            { title: 'WikiLearn', text: 'Capa pedagógica del movimiento que traduce valores compartidos en práctica aprendible, reusable y aplicable.', tags: ['WikiLearn', 'aprendizaje', 'traducción'] },
+            { title: 'Mentoría, onboarding, documentación', text: 'Puentes que hacen encontrable, comprensible y practicable el ingreso o la circulación entre islas.', tags: ['mentoría', 'onboarding', 'documentación'] },
+            { title: 'Boundary spanners', text: 'Actores puente que conectan comunidades, traducen marcos y hacen habitable el paso entre teoría, práctica y pertenencia.', tags: ['traducción', 'mediación', 'comunidad'] }
+          ]
+        },
+        en: {
+          name: 'Bridges',
+          desc: 'Mentorship, translation, and learning to connect islands and layers.',
+          title: '🌉 Bridges',
+          summary: 'Human and pedagogical infrastructures that connect layers, islands, and communities. Without them, the archipelago fragments and becomes less habitable across its parts.',
+          items: [
+            { title: 'WikiLearn', text: 'A pedagogical layer of the movement that translates shared values into learnable, reusable, and applicable practice.', tags: ['WikiLearn', 'learning', 'translation'] },
+            { title: 'Mentoring, onboarding, documentation', text: 'Bridges that make entry into or circulation between islands findable, understandable, and practicable.', tags: ['mentoring', 'onboarding', 'documentation'] },
+            { title: 'Boundary spanners', text: 'Bridge actors who connect communities, translate frameworks, and make the passage between theory, practice, and belonging more habitable.', tags: ['translation', 'mediation', 'community'] }
+          ]
+        }
+      },
+      interactions: {
+        color: '#8e6ff2',
+        icon: '⚡',
+        es: {
+          name: 'Interacciones y disputas',
+          desc: 'Edición, consenso, mediación, conflicto, reversión, abandono y retorno.',
+          title: '⚡ Interacciones y disputas',
+          summary: 'El lugar donde la arquitectura se vuelve vida social real. Aquí se juega quién pertenece, qué tono es legítimo y cómo se custodia el conocimiento en la práctica.',
+          items: [
+            { title: 'Edición y reversión', text: 'La producción del conocimiento no es lineal. Se construye en actos de escritura, corrección, desacuerdo y reescritura.', tags: ['edición', 'reversión', 'producción'] },
+            { title: 'Consenso, mediación, borrado, bloqueo', text: 'Prácticas donde se vuelve visible la política cotidiana del ecosistema y sus formas de resolver tensión.', tags: ['consenso', 'mediación', 'borrado'] },
+            { title: 'Abandono y retorno', text: 'La vida del archipiélago también se mide en cansancio, desgaste, reingreso, aprendizaje y permanencia desigual.', tags: ['retiro', 'retorno', 'cuidado'] }
+          ]
+        },
+        en: {
+          name: 'Interactions and disputes',
+          desc: 'Editing, consensus, mediation, conflict, reversion, abandonment, and return.',
+          title: '⚡ Interactions and disputes',
+          summary: 'The place where architecture becomes real social life. This is where belonging, legitimate tone, and the practical stewardship of knowledge are constantly negotiated.',
+          items: [
+            { title: 'Editing and reversion', text: 'Knowledge production is not linear. It is built through acts of writing, correction, disagreement, and rewriting.', tags: ['editing', 'reversion', 'production'] },
+            { title: 'Consensus, mediation, deletion, blocking', text: 'Practices where the everyday politics of the ecosystem and its ways of resolving tension become visible.', tags: ['consensus', 'mediation', 'deletion'] },
+            { title: 'Abandonment and return', text: 'Life in the archipelago is also measured in fatigue, wear, re-entry, learning, and uneven permanence.', tags: ['withdrawal', 'return', 'care'] }
+          ]
+        }
+      }
+    };
+
+    let currentLang = 'es';
+    let currentLayer = 'islands';
+
+    function renderUI() {
+      const t = ui[currentLang];
+      document.documentElement.lang = t.lang;
+      document.title = t.title;
+      document.querySelector('meta[name="description"]').setAttribute('content', t.subtitle);
+      document.querySelector('meta[property="og:title"]').setAttribute('content', t.title);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', t.subtitle);
+
+      document.getElementById('page-title').textContent = t.title;
+      document.getElementById('page-subtitle').textContent = t.subtitle;
+      document.getElementById('intro-kicker').textContent = t.introKicker;
+      document.getElementById('intro-text').textContent = t.introText;
+      document.getElementById('legend-title').textContent = t.legendTitle;
+      document.getElementById('note-strong').textContent = t.noteStrong;
+      document.getElementById('note-text').textContent = t.noteText;
+      document.getElementById('footer-note').textContent = t.footer;
+
+      document.getElementById('svg-ocean-label').textContent = t.svg.ocean;
+      document.getElementById('svg-archipelago-label').textContent = t.svg.archipelago;
+      document.getElementById('svg-islands-label').textContent = t.svg.islands;
+      document.getElementById('svg-territories-label').textContent = t.svg.territories;
+      document.getElementById('svg-inhabitants-label').textContent = t.svg.inhabitants;
+      document.getElementById('svg-guardians-label').textContent = t.svg.guardians;
+      document.getElementById('svg-bridges-label').textContent = t.svg.bridges;
+      document.getElementById('svg-interactions-label-1').textContent = t.svg.interactions1;
+      document.getElementById('svg-interactions-label-2').textContent = t.svg.interactions2;
+      document.getElementById('diagram-svg').setAttribute('aria-label', currentLang === 'es' ? 'Diagrama estratificado del Archipiélago Wikimedia' : 'Stratified diagram of the Wikimedia Archipelago');
+
+      renderLegend();
+      updateLanguageButtons();
+      showDetail(currentLayer);
+    }
+
+    function renderLegend() {
+      const legendControls = document.getElementById('legend-controls');
+      legendControls.innerHTML = Object.entries(layers).map(([key, layer]) => {
+        const data = layer[currentLang];
+        return `
+          <div class="layer-control ${key === currentLayer ? 'active' : ''}" data-layer="${key}" onclick="toggleLayer('${key}')">
+            <div class="layer-header">
+              <div class="layer-icon" style="background:${layer.color};">${layer.icon}</div>
+              <div class="layer-info">
+                <div class="layer-name">${data.name}</div>
+                <div class="layer-desc">${data.desc}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateLanguageButtons() {
+      document.getElementById('btn-es').classList.toggle('active', currentLang === 'es');
+      document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      renderUI();
+    }
+
     function toggleLayer(layerName) {
+      currentLayer = layerName;
+
       document.querySelectorAll('.layer-control').forEach(el => el.classList.remove('active'));
       const activeControl = document.querySelector(`[data-layer="${layerName}"]`);
       if (activeControl) activeControl.classList.add('active');
@@ -532,7 +692,7 @@
     }
 
     function showDetail(layerName) {
-      const data = layerData[layerName];
+      const data = layers[layerName][currentLang];
       if (!data) return;
 
       document.getElementById('detail-title').innerHTML = data.title;
@@ -546,7 +706,10 @@
       `).join('');
     }
 
-    window.onload = () => toggleLayer('islands');
+    window.onload = () => {
+      renderUI();
+      toggleLayer(currentLayer);
+    };
   </script>
 </body>
 </html>
