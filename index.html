@@ -1,963 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archipiélago Wikimedia</title>
+  <meta name="description" content="Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.">
+  <meta property="og:title" content="Archipiélago Wikimedia">
+  <meta property="og:description" content="Modelo conceptual del ecosistema Wikimedia como archipiélago de infraestructura, valores, comunidades, legitimidad e interacción.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="https://fav.farm/🏝️" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 1rem;
+      min-height: 100vh;
+      color: #1e3a5f;
+    }
+    .container { max-width: 1440px; margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0.75rem;
+      z-index: 999;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(30,58,95,0.12);
+      border-radius: 999px;
+      padding: 0.45rem 0.5rem;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .lang-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #35587c;
+      padding-left: 0.45rem;
+      letter-spacing: 0.02em;
+      opacity: 0.9;
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: #35587c;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #2c8dd8 0%, #226fa9 100%);
+      color: white;
+      box-shadow: 0 8px 22px rgba(44,141,216,0.24);
+    }
 
-const updatedContent = {
-  
-  // ========================================
-  // TAB 1: ARCHIPIÉLAGO
-  // ========================================
-  
-  archipelago: {
+    @media (max-width: 640px) {
+      .topbar { justify-content: center; top: 0.5rem; }
+      .lang-switcher { width: auto; }
+      .lang-label { display: none; }
+    }
+
+    .header { margin-bottom: 1.25rem; text-align: center; }
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: #1e3a5f;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 1.08rem;
+      color: #4a6fa5;
+      max-width: 960px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .intro-panel {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(30,58,95,0.1);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+    }
+    .intro-kicker {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5b7aa4;
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+    .intro-panel p {
+      line-height: 1.7;
+      color: #2c4665;
+    }
+
+    /* NUEVO: Panel de dimensiones */
+    .dimensions-panel {
+      background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+      border: 2px solid #ffd93d;
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(255, 217, 61, 0.15);
+    }
+    .dimensions-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #5f4e00;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dimensions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .dimensions-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .dimension-card {
+      background: white;
+      border-left: 4px solid #ff9a3d;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .dimension-card h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1f3958;
+      margin-bottom: 0.5rem;
+    }
+    .dimension-card p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #49627e;
+      margin-bottom: 0.5rem;
+    }
+    .dimension-arrow {
+      font-size: 0.75rem;
+      color: #ff7a1f;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+
+    .reading-panel {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(30,58,95,0.1);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+    }
+    .reading-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1d3557;
+      margin-bottom: 0.85rem;
+    }
+    .reading-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+    @media (min-width: 860px) {
+      .reading-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .reading-card {
+      background: #f8fafc;
+      border: 1px solid #e2ebf5;
+      border-radius: 14px;
+      padding: 1rem;
+    }
+    .reading-card h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1f3958;
+      margin-bottom: 0.45rem;
+    }
+    .reading-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #49627e;
+    }
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (min-width: 1100px) {
+      .main-content { grid-template-columns: 370px 1fr; }
+      .header { text-align: left; }
+      .subtitle { margin: 0; }
+    }
+    .legend-panel, .note-panel {
+      background: white;
+      border-radius: 18px;
+      padding: 1.2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.09);
+    }
+    .legend-wrap {
+      display: grid;
+      gap: 1rem;
+      position: sticky;
+      top: 1rem;
+    }
+    .legend-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 3px solid #4fc3f7;
+    }
+    .layer-control {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      margin-bottom: 0.7rem;
+    }
+    .layer-control:hover { transform: translateX(4px); }
+    .layer-control.active .layer-header {
+      color: white;
+      background: linear-gradient(135deg, #2c8dd8 0%, #226fa9 100%);
+      box-shadow: 0 8px 22px rgba(44,141,216,0.24);
+    }
+    .layer-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 0.9rem;
+      background: #f2f6fa;
+      border-radius: 12px;
+      transition: background 0.25s ease;
+    }
+    .layer-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.14);
+    }
+    .layer-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.1rem;
+    }
+    .layer-desc {
+      font-size: 0.79rem;
+      opacity: 0.85;
+      line-height: 1.35;
+    }
+    .note-panel {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #38506e;
+    }
+    .note-panel strong { color: #1d3557; }
     
-    // NUEVA CAPA: Organizers (insertar entre "archipelago" e "islands")
-    organizers: {
-      color: '#7b68ee',
-      icon: '🤝',
-      es: {
-        name: 'Organizers / Mediadores',
-        desc: 'Puentes humanos entre audiencias externas y proyectos Wikimedia.',
-        title: '🤝 Organizers / Mediadores',
-        summary: 'Actores que median entre audiencias externas con misiones propias (académicos, GLAMs, activistas) y las normas, culturas y prácticas de los proyectos Wikimedia. No solo reclutan, también traducen marcos culturales y hacen habitable el paso entre mundos.',
-        items: [
-          {
-            title: 'Traducción cultural',
-            text: 'Ayudan a audiencias externas a ver cómo sus misiones propias (investigación pública, preservación cultural, activismo) se conectan con Wikimedia sin forzar alineación total.',
-            tags: ['traducción', 'mediación', 'misiones']
-          },
-          {
-            title: 'Facilitación de entrada',
-            text: 'Diseñan eventos, cursos, campañas y espacios donde nuevos contribuyentes pueden experimentar participación sin dominar todas las normas primero.',
-            tags: ['onboarding', 'facilitación', 'eventos']
-          },
-          {
-            title: 'Absorción de fricción',
-            text: 'Actúan como buffer entre la rigidez de algunas normas wiki y las expectativas de newcomers, negociando legitimidad y pertenencia.',
-            tags: ['fricción', 'legitimidad', 'negociación']
-          }
-        ]
-      },
-      en: {
-        name: 'Organizers / Mediators',
-        desc: 'Human bridges between external audiences and Wikimedia projects.',
-        title: '🤝 Organizers / Mediators',
-        summary: 'Actors who mediate between external audiences with their own missions (academics, GLAMs, activists) and the norms, cultures, and practices of Wikimedia projects. They do not only recruit—they also translate cultural frameworks and make the passage between worlds more habitable.',
-        items: [
-          {
-            title: 'Cultural translation',
-            text: 'Help external audiences see how their own missions (public research, cultural preservation, activism) connect with Wikimedia without forcing total alignment.',
-            tags: ['translation', 'mediation', 'missions']
-          },
-          {
-            title: 'Entry facilitation',
-            text: 'Design events, courses, campaigns, and spaces where new contributors can experience participation without mastering all norms first.',
-            tags: ['onboarding', 'facilitation', 'events']
-          },
-          {
-            title: 'Friction absorption',
-            text: 'Act as a buffer between the rigidity of some wiki norms and newcomer expectations, negotiating legitimacy and belonging.',
-            tags: ['friction', 'legitimacy', 'negotiation']
-          }
-        ]
-      }
-    },
+    .diagram-shell { display: grid; gap: 1rem; }
     
-    // ACTUALIZACIÓN: Agregar item a capa "archipelago" existente
-    archipelago_new_item: {
-      es: {
-        title: 'Audiencias externas con misiones propias',
-        text: 'Movement Strategy 2030 redefine crecimiento: no "cualquiera que quiera editar" sino "cualquiera que comparta nuestra visión". Esto implica invitar personas cuya misión ya está alineada (académicos, bibliotecarios, activistas) y ayudarles a ver cómo Wikimedia sirve a esa misión.',
-        tags: ['audiencias', 'misiones', 'estrategia 2030']
-      },
-      en: {
-        title: 'External audiences with their own missions',
-        text: 'Movement Strategy 2030 redefines growth: not "anyone who wants to edit" but "anyone who shares our vision." This means inviting people whose mission is already aligned (academics, librarians, activists) and helping them see how Wikimedia serves that mission.',
-        tags: ['audiences', 'missions', 'strategy 2030']
-      }
-    },
-    
-    // ACTUALIZACIÓN: Agregar item a capa "bridges" existente
-    bridges_new_item: {
-      es: {
-        title: 'Journey Stages: onboarding temporal',
-        text: 'La entrada al archipiélago no es instantánea. Los editores pasan por etapas (Encountering → Understanding → Applying → Leading) que requieren diferentes tipos de apoyo en cada momento.',
-        tags: ['onboarding', 'temporal', 'etapas']
-      },
-      en: {
-        title: 'Journey Stages: temporal onboarding',
-        text: 'Entry into the archipelago is not instantaneous. Editors move through stages (Encountering → Understanding → Applying → Leading) that require different types of support at each moment.',
-        tags: ['onboarding', 'temporal', 'stages']
-      }
-    },
-    
-    // ACTUALIZACIÓN: Agregar item a capa "interactions" existente
-    interactions_new_item: {
-      es: {
-        title: 'Patrones de participación sostenida',
-        text: 'Las interacciones repetidas producen patrones: algunos editores exploran múltiples proyectos (Exploradores), otros se anclan profundamente en uno (Anclados), y otros quedan varados en las orillas y desertan (Varados).',
-        tags: ['patrones', 'retención', 'tipologías']
-      },
-      en: {
-        title: 'Sustained participation patterns',
-        text: 'Repeated interactions produce patterns: some editors explore multiple projects (Explorers), others anchor deeply in one (Anchored), and still others become stranded at the shores and abandon (Stranded).',
-        tags: ['patterns', 'retention', 'typologies']
-      }
+    /* Vista circular (desktop) */
+    .diagram-container {
+      background: rgba(255,255,255,0.55);
+      border-radius: 22px;
+      padding: 1rem;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+    }
+    .diagram-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 12px 20px rgba(0,0,0,0.08));
     }
     
-  },
-  
-  // ========================================
-  // TAB 2: LAS 8 DIMENSIONES
-  // ========================================
-  
-  dimensions: {
-    intro: {
+    /* NUEVO: Vista apilada para móvil */
+    .diagram-mobile {
+      display: none;
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .mobile-layer {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      border-radius: 14px;
+      border-left: 5px solid;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .mobile-layer:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .mobile-layer-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .mobile-layer-icon {
+      font-size: 2rem;
+    }
+    .mobile-layer-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .mobile-layer-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #49627e;
+    }
+    
+    @media (max-width: 768px) {
+      .diagram-container { display: none; }
+      .diagram-mobile { display: block; }
+    }
+    
+    .layer-ring {
+      transition: opacity 0.35s ease, filter 0.35s ease;
+      cursor: pointer;
+    }
+    .layer-ring:hover { filter: brightness(1.06); }
+    .layer-ring.dimmed {
+      opacity: 0.14;
+      filter: grayscale(0.3);
+    }
+    .layer-label {
+      font-family: inherit;
+      font-weight: 800;
+      pointer-events: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .detail-panel {
+      background: white;
+      border-radius: 20px;
+      padding: 1.2rem;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+      position: sticky;
+      bottom: 1rem;
+    }
+    .detail-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+      color: #19324d;
+    }
+    .detail-summary {
+      font-size: 0.94rem;
+      line-height: 1.6;
+      color: #4d6784;
+      margin-bottom: 1rem;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+    @media (min-width: 800px) {
+      .detail-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .detail-item {
+      background: #f8fafc;
+      padding: 0.9rem;
+      border-radius: 12px;
+      border-left: 4px solid #4fc3f7;
+    }
+    .detail-item-title {
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin-bottom: 0.35rem;
+      color: #1f3958;
+    }
+    .detail-item-text {
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: #49627e;
+      margin-bottom: 0.45rem;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      background: #e2ebf5;
+      border-radius: 999px;
+      margin: 2px 4px 0 0;
+      color: #284561;
+    }
+    .footer-note {
+      margin-top: 0.9rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid #e3ebf3;
+      font-size: 0.74rem;
+      color: #607890;
+      line-height: 1.5;
+    }
+
+    .bibliography-panel {
+      max-width: 1440px;
+      margin: 1.5rem auto 0 auto;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(30,58,95,0.12);
+      border-radius: 20px;
+      padding: 1.35rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .bibliography-kicker {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4a6fa5;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .bibliography-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #19324d;
+      margin-bottom: 0.5rem;
+    }
+    .bibliography-intro {
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: #49627e;
+      margin-bottom: 1rem;
+      max-width: 980px;
+    }
+    .bibliography-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    @media (min-width: 900px) {
+      .bibliography-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .bibliography-item {
+      background: #f8fafc;
+      border: 1px solid #e3ebf3;
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      line-height: 1.55;
+      color: #35506d;
+      font-size: 0.82rem;
+    }
+    .bibliography-item strong {
+      color: #1f3958;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="lang-switcher" aria-label="Language switcher">
+        <span class="lang-label">Idioma / Language</span>
+        <button class="lang-btn active" id="btn-es" onclick="setLanguage('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+
+    <header class="header">
+      <p style="font-size:0.88rem;color:#4a6fa5;margin-bottom:0.75rem;font-weight:600;">Usa el selector ES / EN arriba a la derecha para cambiar el idioma.</p>
+      <h1 id="page-title"></h1>
+      <p class="subtitle" id="page-subtitle"></p>
+    </header>
+
+    <section class="intro-panel">
+      <div class="intro-kicker" id="intro-kicker"></div>
+      <p id="intro-text"></p>
+    </section>
+
+    <!-- NUEVO: Panel de dimensiones -->
+    <section class="dimensions-panel">
+      <div class="dimensions-title">
+        <span>📐</span>
+        <span id="dimensions-title"></span>
+      </div>
+      <div class="dimensions-grid">
+        <div class="dimension-card">
+          <h3 id="dim1-title"></h3>
+          <p id="dim1-text"></p>
+          <div class="dimension-arrow" id="dim1-arrow"></div>
+        </div>
+        <div class="dimension-card">
+          <h3 id="dim2-title"></h3>
+          <p id="dim2-text"></p>
+          <div class="dimension-arrow" id="dim2-arrow"></div>
+        </div>
+        <div class="dimension-card">
+          <h3 id="dim3-title"></h3>
+          <p id="dim3-text"></p>
+          <div class="dimension-arrow" id="dim3-arrow"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reading-panel">
+      <div class="reading-title" id="reading-title"></div>
+      <div class="reading-grid">
+        <article class="reading-card">
+          <h3 id="reading-card-1-title"></h3>
+          <p id="reading-card-1-text"></p>
+        </article>
+        <article class="reading-card">
+          <h3 id="reading-card-2-title"></h3>
+          <p id="reading-card-2-text"></p>
+        </article>
+        <article class="reading-card">
+          <h3 id="reading-card-3-title"></h3>
+          <p id="reading-card-3-text"></p>
+        </article>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <div class="legend-wrap">
+        <aside class="legend-panel">
+          <div class="legend-title" id="legend-title"></div>
+          <div id="legend-controls"></div>
+        </aside>
+
+        <aside class="note-panel">
+          <strong id="note-strong"></strong>
+          <span id="note-text"></span>
+        </aside>
+      </div>
+
+      <div class="diagram-shell">
+        <!-- Vista circular (desktop) -->
+        <section class="diagram-container">
+          <svg class="diagram-svg" viewBox="0 0 820 820" xmlns="http://www.w3.org/2000/svg" aria-label="Stratified diagram of the Wikimedia Archipelago" id="diagram-svg">
+            <g id="layer-ocean-visual" class="layer-ring" onclick="toggleLayer('ocean')">
+              <circle cx="410" cy="410" r="390" fill="none" stroke="#0d1b2a" stroke-width="36" opacity="0.26"/>
+              <text x="410" y="42" text-anchor="middle" class="layer-label" fill="#0d1b2a" font-size="14" id="svg-ocean-label">OCÉANO DIGITAL</text>
+            </g>
+
+            <g id="layer-archipelago-visual" class="layer-ring" onclick="toggleLayer('archipelago')">
+              <circle cx="410" cy="410" r="342" fill="none" stroke="#1e2d3d" stroke-width="28" opacity="0.35"/>
+              <text x="410" y="100" text-anchor="middle" class="layer-label" fill="#1e2d3d" font-size="13" id="svg-archipelago-label">ARCHIPIÉLAGO WIKIMEDIA</text>
+            </g>
+
+            <g id="layer-islands-visual" class="layer-ring active" onclick="toggleLayer('islands')">
+              <circle cx="410" cy="410" r="285" fill="#4fc3f7" opacity="0.56"/>
+              <text x="410" y="412" text-anchor="middle" class="layer-label" fill="white" font-size="24" id="svg-islands-label">ISLAS</text>
+            </g>
+
+            <g id="layer-territories-visual" class="layer-ring" onclick="toggleLayer('territories')">
+              <circle cx="410" cy="410" r="228" fill="none" stroke="#ff9a3d" stroke-width="34" opacity="0.56"/>
+              <text x="410" y="230" text-anchor="middle" class="layer-label" fill="#ff7a1f" font-size="13" id="svg-territories-label">TERRITORIOS</text>
+            </g>
+
+            <g id="layer-inhabitants-visual" class="layer-ring" onclick="toggleLayer('inhabitants')">
+              <circle cx="410" cy="410" r="172" fill="none" stroke="#4ecdc4" stroke-width="30" opacity="0.56"/>
+              <text x="410" y="286" text-anchor="middle" class="layer-label" fill="#2ca7a0" font-size="12" id="svg-inhabitants-label">HABITANTES</text>
+            </g>
+
+            <g id="layer-guardians-visual" class="layer-ring" onclick="toggleLayer('guardians')">
+              <circle cx="410" cy="410" r="126" fill="none" stroke="#ff6b6b" stroke-width="26" opacity="0.58"/>
+              <text x="410" y="337" text-anchor="middle" class="layer-label" fill="#de4f4f" font-size="11" id="svg-guardians-label">GUARDIANES</text>
+            </g>
+
+            <g id="layer-bridges-visual" class="layer-ring" onclick="toggleLayer('bridges')">
+              <circle cx="410" cy="410" r="87" fill="none" stroke="#ffd93d" stroke-width="24" opacity="0.7"/>
+              <text x="410" y="382" text-anchor="middle" class="layer-label" fill="#655200" font-size="11" id="svg-bridges-label">PUENTES</text>
+            </g>
+
+            <g id="layer-interactions-visual" class="layer-ring" onclick="toggleLayer('interactions')">
+              <circle cx="410" cy="410" r="48" fill="#8e6ff2" opacity="0.9"/>
+              <text x="410" y="406" text-anchor="middle" class="layer-label" fill="white" font-size="10" id="svg-interactions-label-1">INTERAC-</text>
+              <text x="410" y="420" text-anchor="middle" class="layer-label" fill="white" font-size="10" id="svg-interactions-label-2">CIONES</text>
+            </g>
+          </svg>
+        </section>
+
+        <!-- NUEVO: Vista apilada para móvil -->
+        <section class="diagram-mobile" id="diagram-mobile">
+          <!-- Generado dinámicamente -->
+        </section>
+
+        <section class="detail-panel" id="detail-panel">
+          <div class="detail-title" id="detail-title"></div>
+          <p class="detail-summary" id="detail-summary"></p>
+          <div class="detail-grid" id="detail-content"></div>
+          <div class="footer-note" id="footer-note"></div>
+        </section>
+      </div>
+    </main>
+
+    <section class="bibliography-panel" aria-labelledby="bibliography-title">
+      <div class="bibliography-kicker" id="bibliography-kicker"></div>
+      <h2 class="bibliography-title" id="bibliography-title"></h2>
+      <p class="bibliography-intro" id="bibliography-intro"></p>
+      <ul class="bibliography-list" id="bibliography-list"></ul>
+    </section>
+
+  </div>
+
+  <script>
+    const ui = {
       es: {
-        kicker: 'Framework analítico',
-        title: 'Las 8 dimensiones estructurales',
-        text: 'Estas dimensiones explican la mayor parte de la variación en cómo personas, comunidades y proyectos navegan el archipiélago Wikimedia. No son exhaustivas ni validadas estadísticamente (aún), pero son útiles para anticipar fricciones, diseñar intervenciones y medir impacto.'
+        title: 'Archipiélago Wikimedia',
+        subtitle: 'Modelo conceptual para leer Wikimedia como un ecosistema estratificado de infraestructura, valores, comunidades, legitimidad e interacción.',
+        introKicker: 'Lectura crítica del ecosistema',
+        introText: 'Wikimedia no funciona como una comunidad única y plana. Funciona como un archipiélago: un conjunto de islas conectadas por una infraestructura común, sostenidas por valores compartidos, atravesadas por disputas de legitimidad y habitadas por comunidades que negocian continuamente quién pertenece, qué conocimiento vale y cómo se custodia el mundo común.',
+        dimensionsTitle: 'Tres dimensiones para leer el diagrama',
+        dim1Title: '1. Dimensión espacial',
+        dim1Text: 'El diagrama se lee de afuera hacia adentro: desde el contexto más amplio (océano digital) hasta las interacciones concretas (centro).',
+        dim1Arrow: '↓ Océano → Archipiélago → Islas → Territorios → Habitantes → Guardianes → Puentes → Interacciones',
+        dim2Title: '2. Dimensión de agencia',
+        dim2Text: 'Desde infraestructuras que condicionan (océano, plataformas) hasta actores que negocian y disputan (habitantes, guardianes, interacciones).',
+        dim2Arrow: '↓ Estructura → Valores → Comunidades → Roles → Prácticas cotidianas',
+        dim3Title: '3. Dimensión de poder',
+        dim3Text: 'Desde legitimidad instituida (territorios, normas) hasta su negociación cotidiana en ediciones, consensos, reversiones y conflictos.',
+        dim3Arrow: '↓ Contexto → Legitimidad → Custodia → Disputa',
+        readingTitle: 'Cómo leer este diagrama',
+        reading1Title: 'Como estructura',
+        reading1Text: 'Muestra las capas del ecosistema, desde la infraestructura digital hasta las interacciones concretas donde se negocian pertenencia y autoridad.',
+        reading2Title: 'Como mundo social',
+        reading2Text: 'No describe solo proyectos. Describe comunidades, memorias, normas, guardianes, puentes y formas desiguales de habitar Wikimedia.',
+        reading3Title: 'Como modelo crítico',
+        reading3Text: 'No solo organiza el ecosistema. También hace visible que Wikimedia vive en tensión entre conocimiento, legitimidad, cuidado, conflicto y custodia del común.',
+        legendTitle: 'Explorar capas',
+        noteStrong: 'Nota crítica.',
+        noteText: ' Las capas del archipiélago no son cerradas ni estables. Se superponen, se disputan y se experimentan de forma desigual según idioma, rol, trayectoria y comunidad.',
+        footer: 'Este modelo es descriptivo y crítico a la vez: organiza el ecosistema, pero también subraya que Wikimedia no solo almacena conocimiento, sino que negocia continuamente quién lo custodia, cómo se habla en su nombre y qué tipo de comunidad tiene autoridad para definirlo.',
+        bibliographyKicker: 'Desde dónde estoy pensando',
+        bibliographyTitle: 'Lecturas y escritos que sostienen este diagrama',
+        bibliographyIntro: 'Este diagrama nace de un cruce entre mis lecturas, mis investigaciones previas y documentos que he usado para pensar comunidades digitales, poder, alteridad, participación y Wikimedia como ecosistema. No es una bibliografía cerrada, sino el recorrido intelectual desde el que estoy construyendo esta lectura.',
+        bibliographyItems: [
+          '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> y <em>Liderazgo y comunidades digitales.</em>',
+          '<strong>Han, Byung-Chul.</strong> <em>La sociedad de la transparencia.</em>',
+          '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
+          '<strong>Mannarini, Terri, Veltri, Giuseppe A. y Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
+          '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David y Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
+          '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>'
+        ],
+        svg: {
+          ocean: 'OCÉANO DIGITAL', archipelago: 'ARCHIPIÉLAGO WIKIMEDIA', islands: 'ISLAS', territories: 'TERRITORIOS', inhabitants: 'HABITANTES', guardians: 'GUARDIANES', bridges: 'PUENTES', interactions1: 'INTERAC-', interactions2: 'CIONES'
+        },
+        lang: 'es'
       },
       en: {
-        kicker: 'Analytical framework',
-        title: 'The 8 structural dimensions',
-        text: 'These dimensions explain most of the variation in how people, communities, and projects navigate the Wikimedia archipelago. They are not exhaustive nor statistically validated (yet), but they are useful for anticipating frictions, designing interventions, and measuring impact.'
+        title: 'Wikimedia Archipelago',
+        subtitle: 'A conceptual model for reading Wikimedia as a stratified ecosystem of infrastructure, values, communities, legitimacy, and interaction.',
+        introKicker: 'Critical reading of the ecosystem',
+        introText: 'Wikimedia does not function as a single flat community. It functions as an archipelago: a set of islands connected by a common infrastructure, sustained by shared values, crossed by disputes over legitimacy, and inhabited by communities that constantly negotiate who belongs, what knowledge counts, and how the common world is stewarded.',
+        dimensionsTitle: 'Three dimensions to read the diagram',
+        dim1Title: '1. Spatial dimension',
+        dim1Text: 'The diagram reads from outside to inside: from the broadest context (digital ocean) to concrete interactions (center).',
+        dim1Arrow: '↓ Ocean → Archipelago → Islands → Territories → Inhabitants → Guardians → Bridges → Interactions',
+        dim2Title: '2. Agency dimension',
+        dim2Text: 'From infrastructures that condition (ocean, platforms) to actors who negotiate and dispute (inhabitants, guardians, interactions).',
+        dim2Arrow: '↓ Structure → Values → Communities → Roles → Everyday practices',
+        dim3Title: '3. Power dimension',
+        dim3Text: 'From instituted legitimacy (territories, norms) to its everyday negotiation in edits, consensus, reversions, and conflicts.',
+        dim3Arrow: '↓ Context → Legitimacy → Stewardship → Dispute',
+        readingTitle: 'How to read this diagram',
+        reading1Title: 'As structure',
+        reading1Text: 'It shows the layers of the ecosystem, from digital infrastructure to the concrete interactions where belonging and authority are negotiated.',
+        reading2Title: 'As a social world',
+        reading2Text: 'It does not describe projects only. It describes communities, memories, norms, guardians, bridges, and unequal ways of inhabiting Wikimedia.',
+        reading3Title: 'As a critical model',
+        reading3Text: 'It does not only organize the ecosystem. It also makes visible that Wikimedia lives in tension between knowledge, legitimacy, care, conflict, and stewardship of the commons.',
+        legendTitle: 'Explore layers',
+        noteStrong: 'Critical note.',
+        noteText: ' The layers of the archipelago are neither closed nor stable. They overlap, they are contested, and they are experienced unevenly depending on language, role, trajectory, and community.',
+        footer: 'This model is both descriptive and critical: it organizes the ecosystem, but it also highlights that Wikimedia not only stores knowledge, it continuously negotiates who stewards it, how it is spoken for, and what kind of community has authority to define it.',
+        bibliographyKicker: 'Where I am thinking from',
+        bibliographyTitle: 'Readings and writings behind this diagram',
+        bibliographyIntro: 'This diagram emerges from a dialogue between my readings, my previous research, and the documents I have been using to think through digital communities, power, otherness, participation, and Wikimedia as an ecosystem. It is not a closed bibliography, but the intellectual path from which I am building this interpretation.',
+        bibliographyItems: [
+          '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
+          '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> and <em>Liderazgo y comunidades digitales.</em>',
+          '<strong>Han, Byung-Chul.</strong> <em>The Transparency Society.</em>',
+          '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
+          '<strong>Mannarini, Terri, Veltri, Giuseppe A. and Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
+          '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David and Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
+          '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>'
+        ],
+        svg: {
+          ocean: 'DIGITAL OCEAN', archipelago: 'WIKIMEDIA ARCHIPELAGO', islands: 'ISLANDS', territories: 'TERRITORIES', inhabitants: 'INHABITANTS', guardians: 'GUARDIANS', bridges: 'BRIDGES', interactions1: 'INTERA-', interactions2: 'CTIONS'
+        },
+        lang: 'en'
       }
-    },
-    
-    list: {
-      autonomy: {
-        color: '#4fc3f7',
-        icon: '🔓',
+    };
+
+    const layers = {
+      ocean: {
+        color: '#0d1b2a',
+        icon: '🌊',
         es: {
-          name: 'Autonomía',
-          desc: '¿Pueden auto-organizarse o necesitan aprobación?',
-          question: '¿Cuánta libertad tienen para actuar sin pedir permiso?',
-          explanation: 'Mide el grado en que editores, comunidades o proyectos pueden tomar decisiones, iniciar proyectos o modificar contenido sin requerir validación externa constante.',
-          examples: [
-            'Un editor experimentado puede crear un artículo nuevo sin supervisión',
-            'Un afiliado local puede organizar eventos sin aprobación central',
-            'Un newcomer necesita mentoría antes de editar ciertos espacios'
+          name: 'Océano digital',
+          desc: 'Internet amplio, atención, visibilidad, velocidad y culturas de plataforma.',
+          title: '🌊 Océano digital',
+          summary: 'El entorno amplio en el que Wikimedia existe: internet, culturas de plataforma, economías de atención, ritmos de visibilidad y hábitos digitales que afectan cómo la gente llega, compara, participa o se retira.',
+          items: [
+            { title: 'Infraestructura no neutral', text: 'Wikimedia habita un internet moldeado por plataformas, lógicas de circulación, métricas y arquitecturas de visibilidad que no controla completamente.', tags: ['plataformas', 'atención', 'visibilidad'] },
+            { title: 'Velocidad y sobreinformación', text: 'El océano digital premia reacción rápida, legibilidad inmediata y flujo continuo, condiciones que muchas veces chocan con el ritmo lento del consenso y la verificación.', tags: ['velocidad', 'fricción', 'ritmo'] },
+            { title: 'Culturas de exposición', text: 'Los hábitos de internet enseñan a valorar lo visible, lo breve y lo circulable. Wikimedia debe coexistir con esa pedagogía sin rendirse a ella.', tags: ['exposición', 'hábitos', 'cultura digital'] }
           ]
         },
         en: {
-          name: 'Autonomy',
-          desc: 'Can they self-organize or do they need approval?',
-          question: 'How much freedom do they have to act without asking permission?',
-          explanation: 'Measures the degree to which editors, communities, or projects can make decisions, initiate projects, or modify content without requiring constant external validation.',
-          examples: [
-            'An experienced editor can create a new article without supervision',
-            'A local affiliate can organize events without central approval',
-            'A newcomer needs mentoring before editing certain spaces'
+          name: 'Digital ocean',
+          desc: 'The broader internet, attention, visibility, speed, and platform cultures.',
+          title: '🌊 Digital ocean',
+          summary: 'The broad environment in which Wikimedia exists: the internet, platform cultures, attention economies, rhythms of visibility, and digital habits that shape how people arrive, compare, participate, or withdraw.',
+          items: [
+            { title: 'Non-neutral infrastructure', text: 'Wikimedia inhabits an internet shaped by platforms, circulation logics, metrics, and architectures of visibility that it does not fully control.', tags: ['platforms', 'attention', 'visibility'] },
+            { title: 'Speed and information overload', text: 'The digital ocean rewards quick reaction, immediate legibility, and continuous flow, conditions that often clash with the slower rhythm of consensus and verification.', tags: ['speed', 'friction', 'rhythm'] },
+            { title: 'Cultures of exposure', text: 'Internet habits teach people to value what is visible, brief, and easily circulated. Wikimedia must coexist with that pedagogy without surrendering to it.', tags: ['exposure', 'habits', 'digital culture'] }
           ]
         }
       },
-      
-      access: {
+      archipelago: {
+        color: '#1e2d3d',
+        icon: '🗺️',
+        es: {
+          name: 'Archipiélago Wikimedia',
+          desc: 'Conjunto de proyectos, comunidades, idiomas, afiliados y memorias compartidas.',
+          title: '🗺️ Archipiélago Wikimedia',
+          summary: 'El ecosistema general del movimiento: un conjunto de proyectos, comunidades, idiomas, afiliados y espacios de coordinación que comparten misión, pero no exactamente las mismas normas, trayectorias ni memorias.',
+          items: [
+            { title: 'Ecosistema plural', text: 'Wikimedia no es una sola comunidad. Es un sistema de comunidades conectadas por misión, infraestructura y fricciones compartidas.', tags: ['pluralidad', 'movimiento', 'conexión'] },
+            { title: 'Misión común, experiencias desiguales', text: 'La idea de conocimiento libre atraviesa el archipiélago, pero cada isla la vive de forma distinta según idioma, contexto, historia y poder local.', tags: ['misión', 'idioma', 'contexto'] },
+            { title: 'Memoria y coordinación', text: 'El archipiélago conserva memoria colectiva a través de proyectos, políticas, campañas, documentación y espacios de deliberación.', tags: ['memoria', 'coordinación', 'gobernanza'] }
+          ]
+        },
+        en: {
+          name: 'Wikimedia archipelago',
+          desc: 'A set of projects, communities, languages, affiliates, and shared memories.',
+          title: '🗺️ Wikimedia archipelago',
+          summary: 'The overall ecosystem of the movement: a set of projects, communities, languages, affiliates, and coordination spaces that share a mission, but not exactly the same norms, trajectories, or memories.',
+          items: [
+            { title: 'Plural ecosystem', text: 'Wikimedia is not a single community. It is a system of communities connected by mission, infrastructure, and shared frictions.', tags: ['plurality', 'movement', 'connection'] },
+            { title: 'Shared mission, unequal experiences', text: 'The idea of free knowledge crosses the archipelago, but each island lives it differently depending on language, context, history, and local power.', tags: ['mission', 'language', 'context'] },
+            { title: 'Memory and coordination', text: 'The archipelago preserves collective memory through projects, policies, campaigns, documentation, and deliberative spaces.', tags: ['memory', 'coordination', 'governance'] }
+          ]
+        }
+      },
+      islands: {
+        color: '#4fc3f7',
+        icon: '🏝️',
+        es: {
+          name: 'Islas',
+          desc: 'Unidades relativamente autónomas con culturas y trayectorias propias.',
+          title: '🏝️ Islas',
+          summary: 'Las unidades relativamente autónomas dentro del archipiélago. Cada isla tiene cultura de trabajo, umbrales de legitimidad, memoria y tono propios.',
+          items: [
+            { title: 'Wikipedia por idiomas', text: 'Comunidades lingüísticas que encarnan la misión común, pero con dinámicas internas, trayectorias y sensibilidades muy distintas.', tags: ['idiomas', 'comunidades', 'contextos locales'] },
+            { title: 'Commons y Wikidata', text: 'Islas especializadas donde cambia la forma del conocimiento y también los criterios de trabajo, cuidado y autoridad.', tags: ['multimedia', 'datos', 'especialización'] },
+            { title: 'Meta, WikiProjects, afiliados', text: 'Espacios donde se articulan coordinación, estrategia, memoria organizativa y circulación de conocimiento entre comunidades.', tags: ['coordinación', 'afiliados', 'proyectos'] }
+          ]
+        },
+        en: {
+          name: 'Islands',
+          desc: 'Relatively autonomous units with their own cultures and trajectories.',
+          title: '🏝️ Islands',
+          summary: 'The relatively autonomous units within the archipelago. Each island has its own work culture, thresholds of legitimacy, memory, and tone.',
+          items: [
+            { title: 'Language Wikipedias', text: 'Language communities that embody the common mission, but with very different internal dynamics, trajectories, and sensibilities.', tags: ['languages', 'communities', 'local contexts'] },
+            { title: 'Commons and Wikidata', text: 'Specialized islands where the form of knowledge changes, along with the criteria for work, care, and authority.', tags: ['multimedia', 'data', 'specialization'] },
+            { title: 'Meta, WikiProjects, affiliates', text: 'Spaces where coordination, strategy, organizational memory, and knowledge circulation between communities are articulated.', tags: ['coordination', 'affiliates', 'projects'] }
+          ]
+        }
+      },
+      territories: {
         color: '#ff9a3d',
-        icon: '🚪',
+        icon: '📜',
         es: {
-          name: 'Acceso',
-          desc: '¿Qué barreras técnicas o lingüísticas enfrentan?',
-          question: '¿Qué tan fácil es entrar y participar?',
-          explanation: 'Identifica obstáculos técnicos, lingüísticos, cognitivos o sociales que dificultan la entrada o navegación en el ecosistema.',
-          examples: [
-            'Interfaz de edición compleja para usuarios no técnicos',
-            'Contenido dominado por idiomas con más recursos',
-            'Falta de documentación en idioma local'
+          name: 'Territorios digitales',
+          desc: 'Valores, normas y criterios de legitimidad que se vuelven operativos.',
+          title: '📜 Territorios digitales',
+          summary: 'Las zonas de sentido donde valores, normas y criterios de legitimidad se vuelven operativos. Aquí se define qué cuenta como conocimiento válido y qué formas de participación se reconocen como propias del proyecto.',
+          items: [
+            { title: 'Verificabilidad y fuentes', text: 'Territorios donde se decide qué evidencia entra, cómo se justifica y qué forma adquiere la credibilidad.', tags: ['fuentes', 'evidencia', 'credibilidad'] },
+            { title: 'Neutralidad, consenso, notabilidad', text: 'Criterios que no son solo técnicos. También organizan autoridad, pertenencia y tono dentro del ecosistema.', tags: ['neutralidad', 'consenso', 'notabilidad'] },
+            { title: 'Idea de buen editor', text: 'Cada territorio modela una imagen de contribución legítima, del newcomer aceptable y del conflicto tolerable.', tags: ['legitimidad', 'rol', 'norma informal'] }
           ]
         },
         en: {
-          name: 'Access',
-          desc: 'What technical or linguistic barriers do they face?',
-          question: 'How easy is it to enter and participate?',
-          explanation: 'Identifies technical, linguistic, cognitive, or social obstacles that hinder entry or navigation in the ecosystem.',
-          examples: [
-            'Complex editing interface for non-technical users',
-            'Content dominated by better-resourced languages',
-            'Lack of documentation in local language'
+          name: 'Digital territories',
+          desc: 'Values, norms, and legitimacy criteria made operational.',
+          title: '📜 Digital territories',
+          summary: 'Zones of meaning where values, norms, and criteria of legitimacy become operative. This is where what counts as valid knowledge and what forms of participation are recognized as proper to the project are defined.',
+          items: [
+            { title: 'Verifiability and sources', text: 'Territories where it is decided what evidence enters, how it is justified, and what form credibility takes.', tags: ['sources', 'evidence', 'credibility'] },
+            { title: 'Neutrality, consensus, notability', text: 'Criteria that are not only technical. They also organize authority, belonging, and tone within the ecosystem.', tags: ['neutrality', 'consensus', 'notability'] },
+            { title: 'Idea of a good editor', text: 'Each territory models an image of legitimate contribution, the acceptable newcomer, and tolerable conflict.', tags: ['legitimacy', 'role', 'informal norm'] }
           ]
         }
       },
-      
-      quality: {
+      inhabitants: {
         color: '#4ecdc4',
-        icon: '✓',
+        icon: '👥',
         es: {
-          name: 'Calidad',
-          desc: '¿Entienden qué cuenta como "buen conocimiento"?',
-          question: '¿Comprenden los estándares epistemológicos del proyecto?',
-          explanation: 'Evalúa si participantes entienden qué hace que una contribución sea considerada confiable, neutral, verificable y notable según normas locales.',
-          examples: [
-            'Entender diferencia entre fuente primaria y secundaria',
-            'Saber qué cuenta como "fuente confiable" en Wikipedia',
-            'Comprender umbral de notabilidad para crear artículos'
+          name: 'Habitantes',
+          desc: 'Roles, trayectorias y experiencias desiguales de habitar el ecosistema.',
+          title: '👥 Habitantes',
+          summary: 'Las personas y agentes que viven el ecosistema de forma desigual. No todos acceden al mismo centro simbólico ni a las mismas claves de lectura.',
+          items: [
+            { title: 'Lectores y editores nuevos', text: 'Entradas iniciales al archipiélago, marcadas por aprendizaje, fricción, descubrimiento y a veces expulsión temprana.', tags: ['newcomers', 'aprendizaje', 'entrada'] },
+            { title: 'Editores establecidos y admins', text: 'Trayectorias más largas que concentran experiencia, interpretación de reglas y autoridad práctica.', tags: ['trayectoria', 'autoridad', 'experiencia'] },
+            { title: 'Afiliados, facilitadores, staff, bots', text: 'Habitantes con funciones distintas que median, sostienen, automatizan o conectan el ecosistema.', tags: ['afiliados', 'facilitación', 'bots'] }
           ]
         },
         en: {
-          name: 'Quality',
-          desc: 'Do they understand what counts as "good knowledge"?',
-          question: 'Do they understand the epistemological standards of the project?',
-          explanation: 'Assesses whether participants understand what makes a contribution reliable, neutral, verifiable, and notable according to local norms.',
-          examples: [
-            'Understanding the difference between primary and secondary sources',
-            'Knowing what counts as a "reliable source" on Wikipedia',
-            'Understanding notability threshold for creating articles'
+          name: 'Inhabitants',
+          desc: 'Roles, trajectories, and unequal ways of inhabiting the ecosystem.',
+          title: '👥 Inhabitants',
+          summary: 'The people and agents who live the ecosystem unevenly. Not everyone has access to the same symbolic center or to the same interpretive keys.',
+          items: [
+            { title: 'Readers and new editors', text: 'Initial entries into the archipelago, marked by learning, friction, discovery, and sometimes early expulsion.', tags: ['newcomers', 'learning', 'entry'] },
+            { title: 'Established editors and admins', text: 'Longer trajectories that concentrate experience, rule interpretation, and practical authority.', tags: ['trajectory', 'authority', 'experience'] },
+            { title: 'Affiliates, facilitators, staff, bots', text: 'Inhabitants with different functions who mediate, sustain, automate, or connect the ecosystem.', tags: ['affiliates', 'facilitation', 'bots'] }
           ]
         }
       },
-      
-      sustainability: {
-        color: '#66bb6a',
-        icon: '🔋',
+      guardians: {
+        color: '#ff6b6b',
+        icon: '🛡️',
         es: {
-          name: 'Sostenibilidad',
-          desc: '¿Pueden contribuir sin quemarse?',
-          question: '¿Es posible participar de forma sostenida sin agotamiento?',
-          explanation: 'Mide si la estructura permite contribución a largo plazo sin burnout, considerando carga emocional, tiempo requerido y reconocimiento recibido.',
-          examples: [
-            'Editores que se retiran por agotamiento emocional en conflictos',
-            'Organizadores que sostienen eventos sin compensación ni descanso',
-            'Falta de reconocimiento para trabajo invisible (mentoría, mediación)'
+          name: 'Guardianes / custodios',
+          desc: 'Actores de regulación, interpretación y custodia de legitimidad.',
+          title: '🛡️ Guardianes / custodios',
+          summary: 'Nodos donde se concentra regulación, interpretación y custodia de legitimidad. No solo protegen. También median, ordenan, filtran y, a veces, excluyen.',
+          items: [
+            { title: 'Patrulleros y admins', text: 'Figuras de mantenimiento del orden cotidiano, reversión, control de calidad y respuesta a disrupciones.', tags: ['patrullaje', 'calidad', 'orden'] },
+            { title: 'Custodios normativos', text: 'Actores que encarnan o interpretan políticas, umbrales de aceptabilidad y fronteras del proyecto.', tags: ['norma', 'interpretación', 'frontera'] },
+            { title: 'Autoridad distribuida', text: 'La legitimidad en Wikimedia no está totalmente centralizada, pero tampoco es plana. Se negocia en roles, trayectorias y reconocimiento.', tags: ['legitimidad', 'poder', 'reconocimiento'] }
           ]
         },
         en: {
-          name: 'Sustainability',
-          desc: 'Can they contribute without burning out?',
-          question: 'Is sustained participation possible without exhaustion?',
-          explanation: 'Measures whether the structure allows long-term contribution without burnout, considering emotional load, time required, and recognition received.',
-          examples: [
-            'Editors who withdraw due to emotional exhaustion in conflicts',
-            'Organizers who sustain events without compensation or rest',
-            'Lack of recognition for invisible work (mentoring, mediation)'
+          name: 'Guardians / stewards',
+          desc: 'Actors of regulation, interpretation, and legitimacy stewardship.',
+          title: '🛡️ Guardians / stewards',
+          summary: 'Nodes where regulation, interpretation, and the stewardship of legitimacy concentrate. They do not only protect. They also mediate, order, filter, and at times exclude.',
+          items: [
+            { title: 'Patrollers and admins', text: 'Figures of everyday order maintenance, reversion, quality control, and response to disruptions.', tags: ['patrolling', 'quality', 'order'] },
+            { title: 'Normative custodians', text: 'Actors who embody or interpret policies, thresholds of acceptability, and project boundaries.', tags: ['norm', 'interpretation', 'boundary'] },
+            { title: 'Distributed authority', text: 'Legitimacy in Wikimedia is not fully centralized, but neither is it flat. It is negotiated across roles, trajectories, and recognition.', tags: ['legitimacy', 'power', 'recognition'] }
           ]
         }
       },
-      
-      equity: {
-        color: '#ab47bc',
-        icon: '⚖️',
+      bridges: {
+        color: '#ffd93d',
+        icon: '🌉',
         es: {
-          name: 'Equidad',
-          desc: '¿Tienen voz real en decisiones?',
-          question: '¿Su participación influye realmente en resultados?',
-          explanation: 'Evalúa si diferentes actores tienen influencia equitativa en gobernanza, políticas y dirección del proyecto, o si el poder está concentrado.',
-          examples: [
-            'Comunidades pequeñas tienen menos peso en decisiones globales',
-            'Newcomers no pueden votar en ciertas discusiones hasta acumular ediciones',
-            'Idiomas minoritarios tienen menos recursos para advocacy'
+          name: 'Puentes',
+          desc: 'Mentoría, traducción y aprendizaje para conectar islas y capas.',
+          title: '🌉 Puentes',
+          summary: 'Infraestructuras humanas y pedagógicas que conectan capas, islas y comunidades. Sin ellas, el archipiélago se fragmenta y se vuelve menos habitable entre sí.',
+          items: [
+            { title: 'WikiLearn', text: 'Capa pedagógica del movimiento que traduce valores compartidos en práctica aprendible, reusable y aplicable.', tags: ['WikiLearn', 'aprendizaje', 'traducción'] },
+            { title: 'Mentoría, onboarding, documentación', text: 'Puentes que hacen encontrable, comprensible y practicable el ingreso o la circulación entre islas.', tags: ['mentoría', 'onboarding', 'documentación'] },
+            { title: 'Boundary spanners', text: 'Actores puente que conectan comunidades, traducen marcos y hacen habitable el paso entre teoría, práctica y pertenencia.', tags: ['traducción', 'mediación', 'comunidad'] }
           ]
         },
         en: {
-          name: 'Equity',
-          desc: 'Do they have a real voice in decisions?',
-          question: 'Does their participation actually influence outcomes?',
-          explanation: 'Assesses whether different actors have equitable influence in governance, policies, and project direction, or whether power is concentrated.',
-          examples: [
-            'Smaller communities have less weight in global decisions',
-            'Newcomers cannot vote in certain discussions until accumulating edits',
-            'Minority languages have fewer resources for advocacy'
+          name: 'Bridges',
+          desc: 'Mentorship, translation, and learning to connect islands and layers.',
+          title: '🌉 Bridges',
+          summary: 'Human and pedagogical infrastructures that connect layers, islands, and communities. Without them, the archipelago fragments and becomes less habitable across its parts.',
+          items: [
+            { title: 'WikiLearn', text: 'A pedagogical layer of the movement that translates shared values into learnable, reusable, and applicable practice.', tags: ['WikiLearn', 'learning', 'translation'] },
+            { title: 'Mentoring, onboarding, documentation', text: 'Bridges that make entry into or circulation between islands findable, understandable, and practicable.', tags: ['mentoring', 'onboarding', 'documentation'] },
+            { title: 'Boundary spanners', text: 'Bridge actors who connect communities, translate frameworks, and make the passage between theory, practice, and belonging more habitable.', tags: ['translation', 'mediation', 'community'] }
           ]
         }
       },
-      
-      temporality: {
-        color: '#ffa726',
-        icon: '⏱️',
+      interactions: {
+        color: '#8e6ff2',
+        icon: '⚡',
         es: {
-          name: 'Temporalidad',
-          desc: '¿Cuánto tarda dominar el territorio?',
-          question: '¿Qué tan empinada es la curva de aprendizaje?',
-          explanation: 'Mide el tiempo necesario para alcanzar competencia funcional en un proyecto, desde primera edición hasta contribución sostenida.',
-          examples: [
-            'Wikipedia en español requiere meses para dominar políticas locales',
-            'Wikidata tiene curva de aprendizaje técnica más empinada que Wikipedia',
-            'Newcomers pueden hacer contribuciones valiosas rápido en ciertos WikiProjects'
+          name: 'Interacciones y disputas',
+          desc: 'Edición, consenso, mediación, conflicto, reversión, abandono y retorno.',
+          title: '⚡ Interacciones y disputas',
+          summary: 'El lugar donde la arquitectura se vuelve vida social real. Aquí se juega quién pertenece, qué tono es legítimo y cómo se custodia el conocimiento en la práctica.',
+          items: [
+            { title: 'Edición y reversión', text: 'La producción del conocimiento no es lineal. Se construye en actos de escritura, corrección, desacuerdo y reescritura.', tags: ['edición', 'reversión', 'producción'] },
+            { title: 'Consenso, mediación, borrado, bloqueo', text: 'Prácticas donde se vuelve visible la política cotidiana del ecosistema y sus formas de resolver tensión.', tags: ['consenso', 'mediación', 'borrado'] },
+            { title: 'Abandono y retorno', text: 'La vida del archipiélago también se mide en cansancio, desgaste, reingreso, aprendizaje y permanencia desigual.', tags: ['retiro', 'retorno', 'cuidado'] }
           ]
         },
         en: {
-          name: 'Temporality',
-          desc: 'How long does it take to master the territory?',
-          question: 'How steep is the learning curve?',
-          explanation: 'Measures the time required to reach functional competence in a project, from first edit to sustained contribution.',
-          examples: [
-            'Spanish Wikipedia requires months to master local policies',
-            'Wikidata has a steeper technical learning curve than Wikipedia',
-            'Newcomers can make valuable contributions quickly in certain WikiProjects'
-          ]
-        }
-      },
-      
-      coordination: {
-        color: '#5c6bc0',
-        icon: '🤝',
-        es: {
-          name: 'Coordinación',
-          desc: '¿Saben sincronizarse con otros?',
-          question: '¿Pueden colaborar efectivamente con otros editores/proyectos?',
-          explanation: 'Evalúa capacidad de trabajar con otros editores, entender flujos de trabajo colaborativos y navegar entre proyectos sin fricción excesiva.',
-          examples: [
-            'Saber usar páginas de discusión para coordinarse',
-            'Entender cómo proponer cambios que afectan a múltiples editores',
-            'Navegar entre Wikipedia y Commons para ilustrar artículos'
-          ]
-        },
-        en: {
-          name: 'Coordination',
-          desc: 'Do they know how to synchronize with others?',
-          question: 'Can they collaborate effectively with other editors/projects?',
-          explanation: 'Assesses ability to work with other editors, understand collaborative workflows, and navigate between projects without excessive friction.',
-          examples: [
-            'Knowing how to use talk pages for coordination',
-            'Understanding how to propose changes that affect multiple editors',
-            'Navigating between Wikipedia and Commons to illustrate articles'
-          ]
-        }
-      },
-      
-      identity: {
-        color: '#ef5350',
-        icon: '🪪',
-        es: {
-          name: 'Identidad',
-          desc: '¿Se sienten parte de la comunidad?',
-          question: '¿Experimentan sentido de pertenencia legítima?',
-          explanation: 'Mide si participantes sienten que "esto es para mí", que su contribución es valorada y que forman parte legítima de la comunidad.',
-          examples: [
-            'Académicos que no ven Wikipedia como espacio profesional legítimo',
-            'Editores de idiomas minoritarios que sienten su trabajo es invisible',
-            'Newcomers que experimentan reversiones como rechazo personal'
-          ]
-        },
-        en: {
-          name: 'Identity',
-          desc: 'Do they feel they are part of the community?',
-          question: 'Do they experience a sense of legitimate belonging?',
-          explanation: 'Measures whether participants feel "this is for me," that their contribution is valued, and that they are a legitimate part of the community.',
-          examples: [
-            'Academics who do not see Wikipedia as a legitimate professional space',
-            'Minority language editors who feel their work is invisible',
-            'Newcomers who experience reversions as personal rejection'
+          name: 'Interactions and disputes',
+          desc: 'Editing, consensus, mediation, conflict, reversion, abandonment, and return.',
+          title: '⚡ Interactions and disputes',
+          summary: 'The place where architecture becomes real social life. This is where belonging, legitimate tone, and the practical stewardship of knowledge are constantly negotiated.',
+          items: [
+            { title: 'Editing and reversion', text: 'Knowledge production is not linear. It is built through acts of writing, correction, disagreement, and rewriting.', tags: ['editing', 'reversion', 'production'] },
+            { title: 'Consensus, mediation, deletion, blocking', text: 'Practices where the everyday politics of the ecosystem and its ways of resolving tension become visible.', tags: ['consensus', 'mediation', 'deletion'] },
+            { title: 'Abandonment and return', text: 'Life in the archipelago is also measured in fatigue, wear, re-entry, learning, and uneven permanence.', tags: ['withdrawal', 'return', 'care'] }
           ]
         }
       }
-    }
-  },
-  
-  // ========================================
-  // TAB 3: JOURNEY STAGES
-  // ========================================
-  
-  journeyStages: {
-    intro: {
-      es: {
-        kicker: 'Progresión temporal',
-        title: 'Journey Stages: El camino del editor',
-        text: 'La participación en Wikimedia no es estática. Los editores se mueven a través de etapas distintas mientras desarrollan familiaridad, competencia e integración. Cada etapa requiere diferentes dimensiones críticas y diferentes tipos de apoyo.'
-      },
-      en: {
-        kicker: 'Temporal progression',
-        title: 'Journey Stages: The editor\'s path',
-        text: 'Participation in Wikimedia is not static. Editors move through distinct stages as they develop familiarity, competence, and integration. Each stage requires different critical dimensions and different types of support.'
-      }
-    },
-    
-    stages: {
-      encountering: {
-        color: '#b3e5fc',
-        icon: '🔍',
-        order: 1,
-        es: {
-          name: 'Encountering',
-          shortName: 'Primer encuentro',
-          desc: 'Primera exposición a Wikimedia (0-5 ediciones)',
-          duration: '0-2 semanas',
-          characteristics: [
-            'No saben cómo funciona el ecosistema',
-            'Alta incertidumbre sobre legitimidad ("¿puedo editar?")',
-            'Percepción externa (lectores, no editores)'
-          ],
-          criticalDimensions: ['Access', 'Identity', 'Quality'],
-          risk: '80% desertan sin hacer primera contribución significativa',
-          intervention: 'Cursos "Introducción a Wikipedia", "Tu primera edición paso a paso"'
-        },
-        en: {
-          name: 'Encountering',
-          shortName: 'First encounter',
-          desc: 'First exposure to Wikimedia (0-5 edits)',
-          duration: '0-2 weeks',
-          characteristics: [
-            'Don\'t know how the ecosystem works',
-            'High uncertainty about legitimacy ("can I edit?")',
-            'External perception (readers, not editors)'
-          ],
-          criticalDimensions: ['Access', 'Identity', 'Quality'],
-          risk: '80% abandon without making first significant contribution',
-          intervention: 'Courses like "Introduction to Wikipedia", "Your first edit step by step"'
-        }
-      },
-      
-      understanding: {
-        color: '#ffcc80',
-        icon: '📚',
-        order: 2,
-        es: {
-          name: 'Understanding',
-          shortName: 'Aprendiendo reglas',
-          desc: 'Haciendo contribuciones pero aprendiendo normas (5-50 ediciones)',
-          duration: '1-6 meses',
-          characteristics: [
-            'Hacen ediciones pero alta tasa de revert (4-8%)',
-            'Están entendiendo verificabilidad, NPOV, fuentes fiables',
-            'Alta sensibilidad a retroalimentación (puede motivar o desanimar)'
-          ],
-          criticalDimensions: ['Quality', 'Temporality', 'Sustainability'],
-          risk: 'Revert sin explicación clara → desertan. Mensajes hostiles → desertan',
-          intervention: 'Cursos "Verificabilidad y fuentes fiables", "Cómo interpretar feedback"'
-        },
-        en: {
-          name: 'Understanding',
-          shortName: 'Learning the rules',
-          desc: 'Making contributions but learning norms (5-50 edits)',
-          duration: '1-6 months',
-          characteristics: [
-            'Make edits but high revert rate (4-8%)',
-            'Understanding verifiability, NPOV, reliable sources',
-            'High sensitivity to feedback (can motivate or discourage)'
-          ],
-          criticalDimensions: ['Quality', 'Temporality', 'Sustainability'],
-          risk: 'Revert without clear explanation → abandon. Hostile messages → abandon',
-          intervention: 'Courses like "Verifiability and reliable sources", "How to interpret feedback"'
-        }
-      },
-      
-      applying: {
-        color: '#a5d6a7',
-        icon: '✏️',
-        order: 3,
-        es: {
-          name: 'Applying',
-          shortName: 'Contribuyendo competentemente',
-          desc: 'Han internalizado normas básicas (50-500 ediciones)',
-          duration: '6 meses - 2 años',
-          characteristics: [
-            'Revert rate bajo (<2%)',
-            'Ediciones persisten',
-            'Entienden políticas básicas',
-            'Pueden tener especialización temática',
-            'Empiezan a participar en discusiones (talk pages)'
-          ],
-          criticalDimensions: ['Identity', 'Coordination', 'Autonomy'],
-          risk: 'Estancamiento (no evolucionan). Burnout (contribuyen sin reconocimiento)',
-          intervention: 'Cursos "De Wikipedia a Wikidata", "Cómo organizar Edit-a-thons"'
-        },
-        en: {
-          name: 'Applying',
-          shortName: 'Contributing competently',
-          desc: 'Have internalized basic norms (50-500 edits)',
-          duration: '6 months - 2 years',
-          characteristics: [
-            'Low revert rate (<2%)',
-            'Edits persist',
-            'Understand basic policies',
-            'May have topic specialization',
-            'Begin participating in discussions (talk pages)'
-          ],
-          criticalDimensions: ['Identity', 'Coordination', 'Autonomy'],
-          risk: 'Stagnation (don\'t evolve). Burnout (contribute without recognition)',
-          intervention: 'Courses like "From Wikipedia to Wikidata", "How to organize Edit-a-thons"'
-        }
-      },
-      
-      leading: {
-        color: '#ce93d8',
-        icon: '👑',
-        order: 4,
-        es: {
-          name: 'Leading',
-          shortName: 'Liderando y organizando',
-          desc: 'Editores establecidos (500+ ediciones) que organizan, mentorean o lideran',
-          duration: '2+ años',
-          characteristics: [
-            'Organizan edit-a-thons, campañas wiki',
-            'Mentorean nuevos editores',
-            'Participan en governance (votaciones, políticas)',
-            'Pueden ser admins, stewards, afiliados'
-          ],
-          criticalDimensions: ['Equity', 'Coordination', 'Sustainability'],
-          risk: 'Burnout (responsabilidad sin recursos). Conflicto con veteranos establecidos',
-          intervention: 'Cursos "Organización y liderazgo comunitario", "Resolución de conflictos"'
-        },
-        en: {
-          name: 'Leading',
-          shortName: 'Leading and organizing',
-          desc: 'Established editors (500+ edits) who organize, mentor, or lead',
-          duration: '2+ years',
-          characteristics: [
-            'Organize edit-a-thons, wiki campaigns',
-            'Mentor new editors',
-            'Participate in governance (voting, policies)',
-            'May be admins, stewards, affiliates'
-          ],
-          criticalDimensions: ['Equity', 'Coordination', 'Sustainability'],
-          risk: 'Burnout (responsibility without resources). Conflict with established veterans',
-          intervention: 'Courses like "Community organizing and leadership", "Conflict resolution"'
-        }
-      }
-    }
-  },
-  
-  // ========================================
-  // TAB 4: PERSONAS (Audiencias Externas)
-  // ========================================
-  
-  personas: {
-    intro: {
-      es: {
-        kicker: 'Audiencias externas',
-        title: 'Personas: Motivaciones para contribuir',
-        text: 'Basadas en New Editors Research (2017) y adaptadas para audiencias específicas. Las personas describen motivación dominante al entrar al curso/proyecto, no identidades fijas. Pueden transformarse según cambios dimensionales.'
-      },
-      en: {
-        kicker: 'External audiences',
-        title: 'Personas: Motivations to contribute',
-        text: 'Based on New Editors Research (2017) and adapted for specific audiences. Personas describe dominant motivation when entering the course/project, not fixed identities. They can transform based on dimensional changes.'
-      }
-    },
-    
-    list: {
-      knowledgeAmplifier: {
-        color: '#4fc3f7',
-        icon: '📢',
-        basedOn: 'Knowledge Sharer (New Editors Research)',
-        es: {
-          name: 'Knowledge Amplifier',
-          tagline: 'Amplificador de conocimiento',
-          description: 'Investigadores que quieren que su trabajo llegue a audiencia más amplia',
-          motivation: 'Aumentar impacto público de su investigación',
-          barriers: [
-            'Access: No sabe cómo editar Wikipedia técnicamente',
-            'Quality: No está seguro qué cuenta como "buena citación" en contexto Wikipedia'
-          ],
-          journeyStage: 'Encountering → Understanding',
-          expectedOutcome: 'Anclado (edita en su área de expertise)',
-          wikiLearnRole: 'Reducir barreras técnicas, clarificar estándares epistemológicos'
-        },
-        en: {
-          name: 'Knowledge Amplifier',
-          tagline: 'Knowledge amplifier',
-          description: 'Researchers who want their work to reach broader audiences',
-          motivation: 'Increase public impact of their research',
-          barriers: [
-            'Access: Doesn\'t know how to edit Wikipedia technically',
-            'Quality: Not sure what counts as "good citation" in Wikipedia context'
-          ],
-          journeyStage: 'Encountering → Understanding',
-          expectedOutcome: 'Anchored (edits within their area of expertise)',
-          wikiLearnRole: 'Reduce technical barriers, clarify epistemological standards'
-        }
-      },
-      
-      publicScholar: {
-        color: '#66bb6a',
-        icon: '🌍',
-        basedOn: 'Social Changer (New Editors Research)',
-        es: {
-          name: 'Public Scholar',
-          tagline: 'Académico público',
-          description: 'Comprometido con Open Access, ciencia pública, conocimiento democratizado',
-          motivation: 'Democratizar conocimiento, combatir desinformación',
-          barriers: [
-            'Identity: Ve Wikipedia como ilegítima académicamente',
-            'Equity: No está seguro si su voz será valorada'
-          ],
-          journeyStage: 'Encountering → Understanding → Applying',
-          expectedOutcome: 'Anclado → potencial Explorador',
-          wikiLearnRole: 'Legitimar Wikipedia como espacio de contribución académica'
-        },
-        en: {
-          name: 'Public Scholar',
-          tagline: 'Public scholar',
-          description: 'Committed to Open Access, public science, democratized knowledge',
-          motivation: 'Democratize knowledge, combat misinformation',
-          barriers: [
-            'Identity: Sees Wikipedia as academically illegitimate',
-            'Equity: Not sure if their voice will be valued'
-          ],
-          journeyStage: 'Encountering → Understanding → Applying',
-          expectedOutcome: 'Anchored → potential Explorer',
-          wikiLearnRole: 'Legitimize Wikipedia as space for academic contribution'
-        }
-      },
-      
-      careerBuilder: {
-        color: '#ffa726',
-        icon: '📊',
-        basedOn: 'Box Checker (New Editors Research)',
-        es: {
-          name: 'Career Builder',
-          tagline: 'Constructor de carrera',
-          description: 'Investigador temprano buscando reconocimiento profesional, líneas CV, métricas',
-          motivation: 'Recompensas externas (tenure, métricas institucionales, visibilidad profesional)',
-          barriers: [
-            'Identity: No ve contribución a Wikipedia como profesionalmente valiosa a menos que "cuente" en métricas'
-          ],
-          journeyStage: 'Encountering → Understanding (alto riesgo de abandono post-curso)',
-          expectedOutcome: 'Varado (si motivación extrínseca persiste)',
-          wikiLearnRole: 'Intentar convertir motivación extrínseca → identificada'
-        },
-        en: {
-          name: 'Career Builder',
-          tagline: 'Career builder',
-          description: 'Early-career researcher seeking professional recognition, CV lines, metrics',
-          motivation: 'External rewards (tenure, institutional metrics, professional visibility)',
-          barriers: [
-            'Identity: Doesn\'t see Wikipedia contribution as professionally valuable unless it "counts" in metrics'
-          ],
-          journeyStage: 'Encountering → Understanding (high risk of post-course abandonment)',
-          expectedOutcome: 'Stranded (if extrinsic motivation persists)',
-          wikiLearnRole: 'Attempt to convert extrinsic → identified motivation'
-        }
-      },
-      
-      communityConnector: {
-        color: '#ab47bc',
-        icon: '🤝',
-        basedOn: 'Joiner Inner (New Editors Research)',
-        es: {
-          name: 'Community Connector',
-          tagline: 'Conector comunitario',
-          description: 'Académico que valora colaboración, interdisciplinariedad, comunidades de práctica',
-          motivation: 'Conectar con otros académicos interesados en comunicación pública y conocimiento compartido',
-          barriers: [
-            'Social Network: No sabe que existe comunidad de académicos Wikipedistas',
-            'Coordination: No sabe cómo encontrar o engancharse con esa comunidad'
-          ],
-          journeyStage: 'Encountering → Understanding → Applying',
-          expectedOutcome: 'Anclado con alto network (potencial futuro organizer)',
-          wikiLearnRole: 'Facilitar conexiones entre participantes, enlazar con comunidades académicas Wikipedia existentes'
-        },
-        en: {
-          name: 'Community Connector',
-          tagline: 'Community connector',
-          description: 'Academic who values collaboration, interdisciplinarity, communities of practice',
-          motivation: 'Connect with other academics interested in public communication and shared knowledge',
-          barriers: [
-            'Social Network: Doesn\'t know that a community of academic Wikipedians exists',
-            'Coordination: Doesn\'t know how to find or engage with that community'
-          ],
-          journeyStage: 'Encountering → Understanding → Applying',
-          expectedOutcome: 'Anchored with high network (potential future organizer)',
-          wikiLearnRole: 'Facilitate connections between participants, link to existing academic Wikipedia communities'
-        }
-      }
-    }
-  },
-  
-  // ========================================
-  // TAB 5: TIPOLOGÍAS (Outcomes)
-  // ========================================
-  
-  typologies: {
-    intro: {
-      es: {
-        kicker: 'Patrones de participación',
-        title: 'Tipologías: ¿Qué tipo de editor emerge?',
-        text: 'Las tipologías son outcomes de combinaciones dimensionales, no categorías fijas. Describen patrones de comportamiento sostenido que emergen después de atravesar journey stages.'
-      },
-      en: {
-        kicker: 'Participation patterns',
-        title: 'Typologies: What kind of editor emerges?',
-        text: 'Typologies are outcomes of dimensional combinations, not fixed categories. They describe sustained behavior patterns that emerge after moving through journey stages.'
-      }
-    },
-    
-    list: {
-      explorers: {
-        color: '#4fc3f7',
-        icon: '🧭',
-        baseline: '12%',
-        target: '25%',
-        es: {
-          name: 'Exploradores',
-          description: 'Navegan fluidamente entre islas (Wikipedia → Wikidata → Commons)',
-          characteristics: [
-            'Alta Coordination (entienden cómo proyectos se conectan)',
-            'Alta Autonomy (cruzan sin guía constante)',
-            'Temporality favorable (aprenden rápido nuevos territorios)'
-          ],
-          metric: 'Editan en 2+ proyectos Wikimedia',
-          example: 'Editor que empieza en Wikipedia, aprende Wikidata para estructurar datos, sube imágenes a Commons'
-        },
-        en: {
-          name: 'Explorers',
-          description: 'Navigate fluidly between islands (Wikipedia → Wikidata → Commons)',
-          characteristics: [
-            'High Coordination (understand how projects connect)',
-            'High Autonomy (cross without constant guidance)',
-            'Favorable Temporality (learn new territories quickly)'
-          ],
-          metric: 'Edit in 2+ Wikimedia projects',
-          example: 'Editor who starts in Wikipedia, learns Wikidata to structure data, uploads images to Commons'
-        }
-      },
-      
-      anchored: {
-        color: '#66bb6a',
-        icon: '⚓',
-        baseline: '55%',
-        target: '75%',
-        es: {
-          name: 'Anclados',
-          description: 'Dominan profundamente UNA isla',
-          characteristics: [
-            'Alta Quality (entienden estándares epistemológicos de SU proyecto)',
-            'Alta Identity (se sienten parte de SU comunidad específica)',
-            'Alta Sustainability (contribuyen consistentemente en el tiempo)'
-          ],
-          metric: 'Revert rate bajo (<2%), ediciones sostenidas en un proyecto',
-          example: 'Editor especializado en WikiProject Medicine que contribuye regularmente a artículos de salud'
-        },
-        en: {
-          name: 'Anchored',
-          description: 'Master one island deeply',
-          characteristics: [
-            'High Quality (understand epistemological standards of THEIR project)',
-            'High Identity (feel part of THEIR specific community)',
-            'High Sustainability (contribute consistently over time)'
-          ],
-          metric: 'Low revert rate (<2%), sustained edits in one project',
-          example: 'Editor specialized in WikiProject Medicine who regularly contributes to health articles'
-        }
-      },
-      
-      stranded: {
-        color: '#ef5350',
-        icon: '🆘',
-        baseline: '33%',
-        target: '<20%',
-        es: {
-          name: 'Varados',
-          description: 'Atascados en las orillas, no logran integrarse',
-          characteristics: [
-            'Baja Access (enfrentan barreras técnicas/lingüísticas)',
-            'Baja Quality (no entienden qué cuenta como buen conocimiento)',
-            'Baja Identity (no se sienten legítimos contribuyendo)',
-            'Temporality desfavorable (curva de aprendizaje demasiado empinada)'
-          ],
-          metric: 'Alta deserción temprana (<10 edits), alta tasa de revert (>6%)',
-          note: 'No son casos perdidos. Son editores que necesitan intervención (cursos, mentoría, mejores herramientas)',
-          example: 'Newcomer cuyas primeras 3 ediciones fueron revertidas sin explicación clara y abandona'
-        },
-        en: {
-          name: 'Stranded',
-          description: 'Stuck at the shores, unable to integrate',
-          characteristics: [
-            'Low Access (face technical/linguistic barriers)',
-            'Low Quality (don\'t understand what counts as good knowledge)',
-            'Low Identity (don\'t feel legitimate contributing)',
-            'Unfavorable Temporality (learning curve too steep)'
-          ],
-          metric: 'High early abandonment (<10 edits), high revert rate (>6%)',
-          note: 'Not lost causes. Editors who need intervention (courses, mentoring, better tools)',
-          example: 'Newcomer whose first 3 edits were reverted without clear explanation and abandons'
-        }
-      }
-    }
-  },
-  
-  // ========================================
-  // TAB 6: VISTA INTEGRADA
-  // ========================================
-  
-  integratedView: {
-    intro: {
-      es: {
-        title: 'Vista integrada: Cómo todo se conecta',
-        text: 'El archipiélago, las dimensiones, los journey stages, las personas y las tipologías no son frameworks separados. Son capas complementarias que juntas explican cómo funciona la participación en Wikimedia.'
-      },
-      en: {
-        title: 'Integrated view: How everything connects',
-        text: 'The archipelago, dimensions, journey stages, personas, and typologies are not separate frameworks. They are complementary layers that together explain how participation in Wikimedia works.'
-      }
-    },
-    
-    flowDiagram: {
-      es: {
-        title: 'Flujo conceptual',
-        steps: [
-          {
-            layer: 'Archipiélago',
-            description: 'Contexto estructural donde sucede todo',
-            question: '¿Dónde están?'
-          },
-          {
-            layer: 'Audiencias Externas (Personas)',
-            description: 'Motivación dominante al entrar',
-            question: '¿Por qué quieren contribuir?'
-          },
-          {
-            layer: 'Organizers',
-            description: 'Mediación cultural entre misiones externas y normas wiki',
-            question: '¿Quién los invita y traduce?'
-          },
-          {
-            layer: 'Journey Stages',
-            description: 'Progresión temporal',
-            question: '¿En qué etapa están?'
-          },
-          {
-            layer: '8 Dimensiones',
-            description: 'Barreras y capacidades estructurales',
-            question: '¿Qué obstáculos enfrentan?'
-          },
-          {
-            layer: 'Tipologías (Outcomes)',
-            description: 'Patrón de participación que emerge',
-            question: '¿Qué tipo de editor se vuelven?'
-          }
-        ]
-      },
-      en: {
-        title: 'Conceptual flow',
-        steps: [
-          {
-            layer: 'Archipelago',
-            description: 'Structural context where everything happens',
-            question: 'Where are they?'
-          },
-          {
-            layer: 'External Audiences (Personas)',
-            description: 'Dominant motivation when entering',
-            question: 'Why do they want to contribute?'
-          },
-          {
-            layer: 'Organizers',
-            description: 'Cultural mediation between external missions and wiki norms',
-            question: 'Who invites and translates?'
-          },
-          {
-            layer: 'Journey Stages',
-            description: 'Temporal progression',
-            question: 'What stage are they at?'
-          },
-          {
-            layer: '8 Dimensions',
-            description: 'Structural barriers and capacities',
-            question: 'What obstacles do they face?'
-          },
-          {
-            layer: 'Typologies (Outcomes)',
-            description: 'Participation pattern that emerges',
-            question: 'What kind of editor do they become?'
-          }
-        ]
-      }
-    },
-    
-    example: {
-      es: {
-        title: 'Ejemplo integrado: Curso Wikipedia for Researchers',
-        persona: 'Public Scholar',
-        personaDescription: 'Académica comprometida con ciencia abierta',
-        motivation: 'Democratizar conocimiento (intrínseca)',
-        entryStage: 'Encountering (0 ediciones previas)',
-        dimensions: {
-          Identity: 'Baja (ve Wikipedia como ilegítima académicamente)',
-          Quality: 'Media (entiende peer review pero no verificabilidad wiki)',
-          Access: 'Media-baja (interfaz técnica intimida)'
-        },
-        intervention: 'Curso Citations',
-        interventionEffect: [
-          'Identity mejora: "Veo Wikipedia como parte de mi responsabilidad como académica"',
-          'Quality mejora: "Entiendo diferencia entre fuente primaria/secundaria en contexto wiki"',
-          'Access mejora: "La interfaz ya no me intimida"'
-        ],
-        postCourse: 'Understanding → Applying (3 meses post-curso)',
-        sixMonths: 'Anclada (50+ ediciones en su área, revert rate 1.2%)',
-        outcome: 'Éxito: Motivación intrínseca + mejora dimensional → participación sostenida'
-      },
-      en: {
-        title: 'Integrated example: Wikipedia for Researchers course',
-        persona: 'Public Scholar',
-        personaDescription: 'Academic committed to open science',
-        motivation: 'Democratize knowledge (intrinsic)',
-        entryStage: 'Encountering (0 prior edits)',
-        dimensions: {
-          Identity: 'Low (sees Wikipedia as academically illegitimate)',
-          Quality: 'Medium (understands peer review but not wiki verifiability)',
-          Access: 'Medium-low (technical interface intimidates)'
-        },
-        intervention: 'Citations course',
-        interventionEffect: [
-          'Identity improves: "I see Wikipedia as part of my responsibility as an academic"',
-          'Quality improves: "I understand difference between primary/secondary source in wiki context"',
-          'Access improves: "The interface no longer intimidates me"'
-        ],
-        postCourse: 'Understanding → Applying (3 months post-course)',
-        sixMonths: 'Anchored (50+ edits in their area, revert rate 1.2%)',
-        outcome: 'Success: Intrinsic motivation + dimensional improvement → sustained participation'
-      }
-    }
-  },
-  
-  // ========================================
-  // BIBLIOGRAFÍA ACTUALIZADA
-  // ========================================
-  
-  bibliography: {
-    es: {
-      kicker: 'Desde dónde estoy pensando',
-      title: 'Lecturas y escritos que sostienen este framework',
-      intro: 'Este framework integra investigación propia, teoría de commons digitales, estudios del movimiento Wikimedia y conversaciones con editores y organizadores. No es una bibliografía cerrada, sino el recorrido intelectual desde el que estoy construyendo esta lectura.',
-      items: [
-        '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
-        '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
-        '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> y <em>Liderazgo y comunidades digitales.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>New Editors Research (2017).</em> Six personas: Reactive Corrector, Knowledge Sharer, Social Changer, Joiner Inner, Box Checker, Audience Builder.',
-        '<strong>Wikimedia Foundation.</strong> <em>Movement Organizers Research (2019).</em> 55 organizers from 15 countries. Finding: organizers mediate between on-wiki communities and external audiences.',
-        '<strong>Ostrom, Elinor.</strong> <em>Governing the Commons.</em> Theoretical foundation for digital commons governance.',
-        '<strong>Kuhn, Thomas.</strong> <em>The Structure of Scientific Revolutions.</em> Epistemological communities and paradigm shifts.',
-        '<strong>Durkheim, Émile.</strong> <em>The Division of Labor in Society.</em> Collective identity formation.',
-        '<strong>Han, Byung-Chul.</strong> <em>La sociedad de la transparencia.</em> Participation crises in digital spaces.',
-        '<strong>Turnbull, David.</strong> <em>Masons, Tricksters and Cartographers.</em> Knowledge circulation in distributed ecosystems.',
-        '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
-        '<strong>Mannarini, Terri, Veltri, Giuseppe A. y Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
-        '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David y Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>Movement Strategy 2030.</em> Strategic Direction: "By 2030, Wikimedia will become the essential infrastructure of the ecosystem of free knowledge, and anyone who shares our vision will be able to join us."'
-      ]
-    },
-    en: {
-      kicker: 'Where I am thinking from',
-      title: 'Readings and writings behind this framework',
-      intro: 'This framework integrates my own research, digital commons theory, Wikimedia movement studies, and conversations with editors and organizers. It is not a closed bibliography, but the intellectual path from which I am building this interpretation.',
-      items: [
-        '<strong>Espinoza Osorio, Anamaría.</strong> <em>Mishitasv en la cibercomunidad de las maravillas: Un acercamiento a la construcción de la identidad de los Salvadoreños en ciber comunidad mexicana ba-k.com.</em>',
-        '<strong>Espinoza, Anamaría.</strong> <em>La perpetuación del poder en la era digital: una historia crítica.</em>',
-        '<strong>Espinoza, Anamaría.</strong> <em>Comunidades Digitales: antecedentes, marco teórico y metodológico</em> and <em>Liderazgo y comunidades digitales.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>New Editors Research (2017).</em> Six personas: Reactive Corrector, Knowledge Sharer, Social Changer, Joiner Inner, Box Checker, Audience Builder.',
-        '<strong>Wikimedia Foundation.</strong> <em>Movement Organizers Research (2019).</em> 55 organizers from 15 countries. Finding: organizers mediate between on-wiki communities and external audiences.',
-        '<strong>Ostrom, Elinor.</strong> <em>Governing the Commons.</em> Theoretical foundation for digital commons governance.',
-        '<strong>Kuhn, Thomas.</strong> <em>The Structure of Scientific Revolutions.</em> Epistemological communities and paradigm shifts.',
-        '<strong>Durkheim, Émile.</strong> <em>The Division of Labor in Society.</em> Collective identity formation.',
-        '<strong>Han, Byung-Chul.</strong> <em>The Transparency Society.</em> Participation crises in digital spaces.',
-        '<strong>Turnbull, David.</strong> <em>Masons, Tricksters and Cartographers.</em> Knowledge circulation in distributed ecosystems.',
-        '<strong>Spracklen, Karl.</strong> <em>Digital Leisure, the Internet and Popular Culture: Communities and Identities in a Digital Age.</em>',
-        '<strong>Mannarini, Terri, Veltri, Giuseppe A. and Salvatore, Sergio (eds.).</strong> <em>Media and Social Representations of Otherness: Psycho-Social-Cultural Implications.</em>',
-        '<strong>Pinfield, Stephen, Wakeling, Simon, Bawden, David and Robinson, Lyn.</strong> <em>Open Access in Theory and Practice.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>Brand Health Tracker, Wave 8.</em>',
-        '<strong>Wikimedia Foundation.</strong> <em>Movement Strategy 2030.</em> Strategic Direction: "By 2030, Wikimedia will become the essential infrastructure of the ecosystem of free knowledge, and anyone who shares our vision will be able to join us."'
-      ]
-    }
-  }
-  
-};
+    };
 
-// ============================================================================
-// FIN DEL CONTENIDO
-// ============================================================================
+    let currentLang = 'es';
+    let currentLayer = 'islands';
 
-// NOTA DE USO:
-// Este objeto contiene TODO el contenido actualizado estructurado por tabs.
-// Para implementarlo en el HTML:
-// 1. Agregar capa "organizers" al diagrama circular existente
-// 2. Agregar tabs de navegación
-// 3. Crear vistas para cada tab usando este contenido
-// 4. Implementar vista integrada con diagrama de flujo
+    function renderUI() {
+      const t = ui[currentLang];
+      document.documentElement.lang = t.lang;
+      document.title = t.title;
+      document.querySelector('meta[name="description"]').setAttribute('content', t.subtitle);
+      document.querySelector('meta[property="og:title"]').setAttribute('content', t.title);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', t.subtitle);
+
+      document.getElementById('page-title').textContent = t.title;
+      document.getElementById('page-subtitle').textContent = t.subtitle;
+      document.getElementById('intro-kicker').textContent = t.introKicker;
+      document.getElementById('intro-text').textContent = t.introText;
+      
+      // Dimensiones
+      document.getElementById('dimensions-title').textContent = t.dimensionsTitle;
+      document.getElementById('dim1-title').textContent = t.dim1Title;
+      document.getElementById('dim1-text').textContent = t.dim1Text;
+      document.getElementById('dim1-arrow').textContent = t.dim1Arrow;
+      document.getElementById('dim2-title').textContent = t.dim2Title;
+      document.getElementById('dim2-text').textContent = t.dim2Text;
+      document.getElementById('dim2-arrow').textContent = t.dim2Arrow;
+      document.getElementById('dim3-title').textContent = t.dim3Title;
+      document.getElementById('dim3-text').textContent = t.dim3Text;
+      document.getElementById('dim3-arrow').textContent = t.dim3Arrow;
+      
+      document.getElementById('reading-title').textContent = t.readingTitle;
+      document.getElementById('reading-card-1-title').textContent = t.reading1Title;
+      document.getElementById('reading-card-1-text').textContent = t.reading1Text;
+      document.getElementById('reading-card-2-title').textContent = t.reading2Title;
+      document.getElementById('reading-card-2-text').textContent = t.reading2Text;
+      document.getElementById('reading-card-3-title').textContent = t.reading3Title;
+      document.getElementById('reading-card-3-text').textContent = t.reading3Text;
+      document.getElementById('legend-title').textContent = t.legendTitle;
+      document.getElementById('note-strong').textContent = t.noteStrong;
+      document.getElementById('note-text').textContent = t.noteText;
+      document.getElementById('footer-note').textContent = t.footer;
+      document.getElementById('bibliography-kicker').textContent = t.bibliographyKicker;
+      document.getElementById('bibliography-title').textContent = t.bibliographyTitle;
+      document.getElementById('bibliography-intro').textContent = t.bibliographyIntro;
+      document.getElementById('bibliography-list').innerHTML = t.bibliographyItems.map(item => `<li class="bibliography-item">${item}</li>`).join('');
+
+      document.getElementById('svg-ocean-label').textContent = t.svg.ocean;
+      document.getElementById('svg-archipelago-label').textContent = t.svg.archipelago;
+      document.getElementById('svg-islands-label').textContent = t.svg.islands;
+      document.getElementById('svg-territories-label').textContent = t.svg.territories;
+      document.getElementById('svg-inhabitants-label').textContent = t.svg.inhabitants;
+      document.getElementById('svg-guardians-label').textContent = t.svg.guardians;
+      document.getElementById('svg-bridges-label').textContent = t.svg.bridges;
+      document.getElementById('svg-interactions-label-1').textContent = t.svg.interactions1;
+      document.getElementById('svg-interactions-label-2').textContent = t.svg.interactions2;
+      document.getElementById('diagram-svg').setAttribute('aria-label', currentLang === 'es' ? 'Diagrama estratificado del Archipiélago Wikimedia' : 'Stratified diagram of the Wikimedia Archipelago');
+
+      renderLegend();
+      renderMobileDiagram();
+      updateLanguageButtons();
+      showDetail(currentLayer);
+    }
+
+    function renderLegend() {
+      const legendControls = document.getElementById('legend-controls');
+      legendControls.innerHTML = Object.entries(layers).map(([key, layer]) => {
+        const data = layer[currentLang];
+        return `
+          <div class="layer-control ${key === currentLayer ? 'active' : ''}" data-layer="${key}" onclick="toggleLayer('${key}')">
+            <div class="layer-header">
+              <div class="layer-icon" style="background:${layer.color};">${layer.icon}</div>
+              <div class="layer-info">
+                <div class="layer-name">${data.name}</div>
+                <div class="layer-desc">${data.desc}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMobileDiagram() {
+      const mobileContainer = document.getElementById('diagram-mobile');
+      const layerOrder = ['ocean', 'archipelago', 'islands', 'territories', 'inhabitants', 'guardians', 'bridges', 'interactions'];
+      
+      mobileContainer.innerHTML = layerOrder.map(key => {
+        const layer = layers[key];
+        const data = layer[currentLang];
+        return `
+          <div class="mobile-layer" style="border-left-color: ${layer.color}; background: ${layer.color}08;" onclick="toggleLayer('${key}')">
+            <div class="mobile-layer-header">
+              <div class="mobile-layer-icon">${layer.icon}</div>
+              <div>
+                <div class="mobile-layer-title" style="color: ${layer.color};">${data.name}</div>
+              </div>
+            </div>
+            <div class="mobile-layer-desc">${data.desc}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateLanguageButtons() {
+      document.getElementById('btn-es').classList.toggle('active', currentLang === 'es');
+      document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      renderUI();
+    }
+
+    function toggleLayer(layerName) {
+      currentLayer = layerName;
+
+      document.querySelectorAll('.layer-control').forEach(el => el.classList.remove('active'));
+      const activeControl = document.querySelector(`[data-layer="${layerName}"]`);
+      if (activeControl) activeControl.classList.add('active');
+
+      document.querySelectorAll('.layer-ring').forEach(el => {
+        el.classList.remove('active');
+        el.classList.add('dimmed');
+      });
+
+      const visualLayer = document.getElementById(`layer-${layerName}-visual`);
+      if (visualLayer) {
+        visualLayer.classList.remove('dimmed');
+        visualLayer.classList.add('active');
+      }
+
+      showDetail(layerName);
+    }
+
+    function showDetail(layerName) {
+      const data = layers[layerName][currentLang];
+      if (!data) return;
+
+      document.getElementById('detail-title').innerHTML = data.title;
+      document.getElementById('detail-summary').innerHTML = data.summary;
+      document.getElementById('detail-content').innerHTML = data.items.map(item => `
+        <article class="detail-item">
+          <div class="detail-item-title">${item.title}</div>
+          <p class="detail-item-text">${item.text}</p>
+          <div>${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+        </article>
+      `).join('');
+    }
+
+    window.onload = () => {
+      renderUI();
+      toggleLayer(currentLayer);
+    };
+  </script>
+</body>
+</html>
